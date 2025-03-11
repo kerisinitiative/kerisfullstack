@@ -8,6 +8,7 @@ import App from "./App";
 import Record from "./components/Record";
 import RecordList from "./components/RecordList";
 import "./index.scss";
+import Dev from "./components/Dev";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,17 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <Record />,
+      },
+    ],
+  },
+  // Dev Page
+  {
+    path: "/dev",
+    element: <App />,
+    children: [
+      {
+        path: "/dev",
+        element: <Dev />,
       },
     ],
   },
