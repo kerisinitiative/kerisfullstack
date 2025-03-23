@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import profile_pic from "./piqim.jpg";
 
-// your mom
+// your mom mostly
 const Record = (props) => (
   <>
   
