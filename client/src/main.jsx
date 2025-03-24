@@ -9,6 +9,16 @@ import Record from "./components/Record";
 import RecordList from "./components/RecordList";
 import "./index.scss";
 import Dev from "./components/Dev";
+import Home from "./components/Home";
+import ScholarList from "./components/ScholarList";
+import ScholarshipList from "./components/ScholarshipList";
+import Scholar from "./components/Scholar";
+import Scholarship from "./components/Scholarship";
+import ScholarshipDetail from "./components/ScholarshipDetail";
+import ScholarDetail from "./components/ScholarDetail";
+import Dashboard from "./components/Dashboard";
+import RecordScholar from "./components/RecordScholar";
+import RecordScholarship from "./components/RecordScholarship";
 
 /* Routes (pages) for the webapp */
 const router = createBrowserRouter([
@@ -22,7 +32,7 @@ const router = createBrowserRouter([
       // home page - route
       {
         index: true,
-        element: <RecordList />,
+        element: <Home />,
       },
       // scholar route
       {
@@ -31,12 +41,12 @@ const router = createBrowserRouter([
           // scholar list
           {
             index: true,
-            element: <Dev />,
+            element: <Scholar />,
           },
           // scholar detail
           {
             path: "detail/:id",
-            element: <Dev />,
+            element: <ScholarDetail />,
           },
         ],
       },
@@ -47,12 +57,12 @@ const router = createBrowserRouter([
           // scholarship list
           {
             index: true,
-            element: <Dev />,
+            element: <Scholarship />,
           },
           // scholarship detail
           {
             path: "detail/:id",
-            element: <Dev />,
+            element: <ScholarshipDetail />,
           },
         ,]
       },
@@ -69,37 +79,37 @@ const router = createBrowserRouter([
       // admin dashboard page
       {
         index: true,
-        element: <RecordList />,
+        element: <Dashboard />,
       },
       // list of scholar record
       {
         path: "scholar-list",
-            element: <Dev />,
+            element: <ScholarList />,
       },
       // add scholar
       {
         path: "scholar-list/add",
-            element: <Dev />,
+            element: <RecordScholar />,
       },
       // edit scholar
       {
         path: "scholar-list/edit:id",
-            element: <Dev />,
+            element: <RecordScholar />,
       },
       // list of scholarship record
       {
         path: "scholarship-list",
-            element: <Dev />,
+            element: <ScholarshipList />,
       },
       // add scholarship
       {
         path: "scholarship-list/add",
-            element: <Dev />,
+            element: <RecordScholarship />,
       },
       // edit scholarship
       {
         path: "scholarship-list/edit:id",
-            element: <Dev />,
+            element: <RecordScholarship />,
       },
 
     ],

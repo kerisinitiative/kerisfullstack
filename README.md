@@ -1,3 +1,24 @@
+# KERIS Webapp : Made with MERN Stack
+
+## Route Map
+### Client Path
+* Home Page:
+* Scholar
+- Scholar - Detail
+* Scholarship
+- Scholarship - Detail
+
+### Admin Path
+* Dashboard Page:
+* Scholar (List)
+- Add Scholar
+- Edit Scholar
+- Delete Scholar
+* Scholarship (List)
+- Add Scholarship
+- Edit Scholarship
+- Delete Scholarship
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
