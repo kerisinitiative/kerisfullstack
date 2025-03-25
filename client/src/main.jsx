@@ -4,10 +4,17 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import App from "./App";
+
 import Record from "./components/Record";
 import RecordList from "./components/RecordList";
+
+// Import main App
+import App from "./App";
+
+// Import CSS : Tailwind File
 import "./index.scss";
+
+// Import page components
 import Dev from "./components/Dev";
 import Home from "./components/Home";
 import ScholarList from "./components/ScholarList";
