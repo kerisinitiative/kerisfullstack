@@ -30,7 +30,7 @@ export default function Navbar() {
             <li><a href="#about" className="hover:text-opacity-80 transition">About</a></li>
             <li className="relative group">
               <a href="#resource" className="hover:text-opacity-80 transition">Resources</a>
-              <ul className="absolute hidden group-hover:block bg-[#F16767] p-2 rounded shadow-lg min-w-[200px]">
+              <ul className="absolute hidden group-hover:block bg-[#F16767] p-2 rounded shadow-lg min-w-[200px] z-50">
                 <NavLink to="/scholar">
                   <li><a className="block p-2 hover:bg-gray-100 hover:rounded">Meet Your Scholars</a></li>
                 </NavLink>
