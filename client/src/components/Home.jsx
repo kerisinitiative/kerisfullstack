@@ -6,9 +6,7 @@ const Home = () => {
   return (
     <body>
       {/* Import Navbar Component */}
-      <Navbar/>
       Home
-      <Footer/>
     </body>
   )
 }
