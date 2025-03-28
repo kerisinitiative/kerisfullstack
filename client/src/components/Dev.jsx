@@ -1,5 +1,4 @@
 import React from "react";
-import profile_pic from "./piqim.jpg";
 
 const Dev = () => {
   return (

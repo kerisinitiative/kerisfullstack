@@ -1,10 +1,12 @@
-import React from 'react'
+import React from "react";
 import bgImg from "../assets/img/hero-bg1.jpg";
+import placeholderImg from "../assets/img/imgplaceholder.jpg"
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 /* Fetch database records and display in modals */
 const Record = (props) => (
+  /* Modals for Scholar Record */
   <>
     <div className="max-w-sm w-full bg-white rounded-2xl shadow-lg overflow-hidden">
       {/* Display the profile image if it exists */}
@@ -17,14 +19,17 @@ const Record = (props) => (
       )}
       {!props.record.image && (
         <img
-          src="./piqim.jpg" // Default image if no image is uploaded
+          src={placeholderImg} // Default image if no image is uploaded
           alt="Profile"
           className="w-full h-48 object-cover"
         />
       )}
       <div className="p-4">
-        <h2 className="font-semibold flex items-center gap-2">{props.record.name}</h2>
+        <h2 className="font-semibold flex items-center gap-2">
+          {props.record.name}
+        </h2>
         <div className="mt-2 flex flex-wrap gap-2">
+          # Note to self, add more atributes after Dayana and Zai sort the database
           <span className="bg-green-600 text-white text-sm px-3 py-1 rounded-md">
             {props.record.sponsor}
           </span>
@@ -50,87 +55,240 @@ const Record = (props) => (
 );
 
 const Scholar = () => {
-    const [records, setRecords] = useState([]);
-  
-    // This method fetches the records from the database.
-    useEffect(() => {
-      async function getRecords() {
-        const response = await fetch(`http://localhost:5050/record/`);
-        if (!response.ok) {
-          const message = `An error occurred: ${response.statusText}`;
-          console.error(message);
-          return;
-        }
-        const records = await response.json();
-        setRecords(records);
+  const [records, setRecords] = useState([]);
+  const [filters, setFilters] = useState([]);
+
+  useEffect(() => {
+    async function getRecords() {
+      const response = await fetch(`http://localhost:5050/record/`);
+      if (!response.ok) {
+        console.error(`An error occurred: ${response.statusText}`);
+        return;
       }
-      getRecords();
-      return;
-    }, [records.length]);
-  
-    // This method will map out the records on the table
-    function recordList() {
-      return records.map((record) => {
-        return (
-          <Record
-            record={record}
-            key={record._id}
-          />
-        );
-      });
+      const data = await response.json();
+      setRecords(data);
     }
+    getRecords();
+  }, []);
+
+  const addFilter = (type, value) => {
+    if (value && !filters.some((f) => f.type === type && f.value === value)) {
+      setFilters([...filters, { type, value }]);
+    }
+  };
+
+  const removeFilter = (index) => {
+    const newFilters = filters.filter((_, i) => i !== index);
+    setFilters(newFilters);
+  };
+
+  const clearFilters = () => {
+    setFilters([]);
+  };
+
+  const filteredRecords = records.filter((record) => {
+    return filters.every(({ type, value }) => {
+      if (type === "name") {
+        return record.name.toLowerCase().includes(value.toLowerCase());
+      }
+      return record[type] === value;
+    });
+  });
 
   return (
     <div className="min-h-screen bg-gray-100 p-2 sm:p-6">
       {/* Header with Parallax Background */}
-      <header className="relative h-96 flex items-center justify-center text-center text-white shadow-md rounded-lg md:h-[30rem] lg:h-[32rem]" style={{ backgroundImage: `url(${bgImg})`, backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="bg-black bg-opacity-50 p-2 sm:p-6 rounded-lg min-w-40 max-w-80 md:max-w-lg mx-auto">
-          <h1 className="text-xl font-bold sm:text-2xl md:text-4xl">Welcome to Your Scholar Dashboard 🎓</h1>
-          <p className="text-lg text-gray-200 mt-2 md:text-xl">Your one-stop hub for mentorship, resources, and growth. Let's make your journey smoother!</p>
+      <header
+        className="relative h-96 flex items-center justify-center text-center text-white shadow-md rounded-lg md:h-[30rem] lg:h-[32rem]"
+        style={{
+          backgroundImage: `url(${bgImg})`,
+          backgroundAttachment: "fixed",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="bg-black bg-opacity-50 p-4 sm:p-6 rounded-lg min-w-40 max-w-80 md:max-w-lg mx-auto">
+          <h1 className="text-xl text-white font-bold sm:text-2xl md:text-4xl">
+            Welcome to Your Scholar Dashboard 🎓
+          </h1>
+          <p className="text-lg text-gray-200 mt-2 md:text-xl">
+            Your one-stop hub for mentorship, resources, and growth. Let's make
+            your journey smoother!
+          </p>
+          <div data-aos="fade-up" data-aos-delay="800">
+            <a
+              href="#scholar-section"
+              data-aos="fade-up"
+              data-aos-delay="300"
+              className="btn-get-started scrollto mt-2"
+            >
+              Get <b>Started</b>!
+            </a>
+          </div>
         </div>
       </header>
 
       {/* Help & Mentee Guide Modals */}
-      <section className="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-1 gap-6 mt-10">
         {/* How Do We Help? */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-gray-800">How Do We Help?</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            How Do We Help?
+          </h2>
           <div className="mt-4 space-y-4">
-            <aside className="p-4 bg-gray-100 rounded-lg">🔑 We provide a <strong>General Helpline</strong> where you can ask questions directly to our scholars. You can ask anything, from course choices to assessment tips.</aside>
-            <aside className="p-4 bg-gray-100 rounded-lg">👨🏽‍🎓 We offer <strong>Mock Interviews</strong> to help you prepare for upcoming scholarship interviews.</aside>
-            <aside className="p-4 bg-gray-100 rounded-lg">📖 We also offer help with <strong>Proofreading Essays</strong> for applications that require essays, such as YK, PNB, and UEM.</aside>
-            <aside className="p-4 bg-gray-100 rounded-lg">📰 Our scholars can help you <strong>Build Your CV</strong> by reviewing it and suggesting appropriate amendments. This service is available for Shell, YK, and other scholarships.</aside>
+            <aside className="p-4 bg-gray-100 rounded-lg">
+              🔑 We provide a <strong>General Helpline</strong> where you can
+              ask questions directly to our scholars. You can ask anything, from
+              course choices to assessment tips.
+            </aside>
+            <aside className="p-4 bg-gray-100 rounded-lg">
+              👨🏽‍🎓 We offer <strong>Mock Interviews</strong> to help you prepare
+              for upcoming scholarship interviews.
+            </aside>
+            <aside className="p-4 bg-gray-100 rounded-lg">
+              📖 We also offer help with <strong>Proofreading Essays</strong>{" "}
+              for applications that require essays, such as YK, PNB, and UEM.
+            </aside>
+            <aside className="p-4 bg-gray-100 rounded-lg">
+              📰 Our scholars can help you <strong>Build Your CV</strong> by
+              reviewing it and suggesting appropriate amendments. This service
+              is available for Shell, YK, and other scholarships.
+            </aside>
           </div>
         </div>
 
         {/* How to Become our Mentee? */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-gray-800">How to Become our Mentee?</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            How to Become our Mentee?
+          </h2>
           <ul className="mt-4 space-y-2 list-disc list-inside text-gray-600">
-            <li>Reach out to one of your favorite mentors through Gmail or other contact points like Telegram or Instagram.</li>
-            <li>Ask for any kind of help you need, no matter how big or small. We'll do our best to assist you.</li>
-            <li>If you're new to scholarship tips, let us know in your message. It helps us figure out how to best help you.</li>
+            <li>
+              Reach out to one of your favorite mentors through Gmail or other
+              contact points like Telegram or Instagram.
+            </li>
+            <li>
+              Ask for any kind of help you need, no matter how big or small.
+              We'll do our best to assist you.
+            </li>
+            <li>
+              If you're new to scholarship tips, let us know in your message. It
+              helps us figure out how to best help you.
+            </li>
           </ul>
-          <p className="mt-4 text-gray-600">Don't be shy – we're here to support you!</p>
+          <p className="mt-4 text-gray-600">
+            Don't be shy – we're here to support you!
+          </p>
         </div>
       </section>
 
-      {/* Scholar Directory */}
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold text-gray-800 text-center">Mentor Directory</h2>
-        <p className="text-gray-600 text-sm text-center">Find mentors by expertise and availability.</p>
-        <div className="grid mt-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6 max-w-7xl">
-          {recordList()}
-        </div>
-      </section>
+      {/* Scholar & Filter Directory */}
+      <section id="scholar-section" className="my-5 py-5">
+        <h2 className="text-xl font-semibold text-gray-800 text-center">
+          Scholar Directory
+        </h2>
+        <p className="text-gray-600 text-sm text-center">
+          Find scholars by expertise and availability.
+        </p>
+        {/* Filter Section */}
+        <div className="bg-white p-4 rounded-lg shadow mt-6">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Filter Scholars
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <input
+              type="text"
+              placeholder="Search by Name..."
+              className="w-full px-3 py-2 border rounded-md"
+              onKeyDown={(e) =>
+                e.key === "Enter" && addFilter("name", e.target.value)
+              }
+            />
+            <select
+              className="w-full px-3 py-2 border rounded-md"
+              onChange={(e) => addFilter("sponsor", e.target.value)}
+            >
+              <option value="">Select Sponsor</option>
+              {[...new Set(records.map((r) => r.sponsor))].map((sponsor) => (
+                <option key={sponsor} value={sponsor}>
+                  {sponsor}
+                </option>
+              ))}
+            </select>
+            <select
+              className="w-full px-3 py-2 border rounded-md"
+              onChange={(e) => addFilter("major", e.target.value)}
+            >
+              <option value="">Select Major</option>
+              {[...new Set(records.map((r) => r.major))].map((major) => (
+                <option key={major} value={major}>
+                  {major}
+                </option>
+              ))}
+            </select>
+            <select
+              className="w-full px-3 py-2 border rounded-md"
+              onChange={(e) => addFilter("institution", e.target.value)}
+            >
+              <option value="">Select Institution</option>
+              {[...new Set(records.map((r) => r.institution))].map(
+                (institution) => (
+                  <option key={institution} value={institution}>
+                    {institution}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
 
-      {/* FAQs & Contact */}
-      <section className="mt-10 bg-white p-4 rounded-lg shadow text-center">
-        <h2 className="text-xl font-semibold text-gray-800">FAQs</h2>
-        <p className="text-gray-600 text-sm mt-2">Check common queries or contact a mentor directly.</p>
+          {/* Active Filters */}
+          {filters.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {filters.map((filter, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md flex items-center gap-2"
+                >
+                  {filter.type}: {filter.value}
+                  <button
+                    className="ml-2 bg-red-500 text-white rounded-full px-2"
+                    onClick={() => removeFilter(index)}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Buttons for Clearing Filters */}
+          {filters.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={clearFilters}
+                className="bg-red-500 text-white px-4 py-2 rounded-md"
+              >
+                Clear Filters
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Scholar Profile Modal Section */}
+        <div className="grid justify-items-center mt-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl">
+          {filteredRecords.length > 0 ? (
+            filteredRecords.map((record) => (
+              <Record record={record} key={record._id} />
+            ))
+          ) : (
+            <p className="text-center mt-4 text-gray-500 col-span-full">
+              No scholars found.
+            </p>
+          )}
+        </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Scholar
+export default Scholar;

@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <footer id='footer' className='w-full'>
-        <div className='container mx-auto px-2'>
+        <div className='container py-6 mx-auto px-2'>
             <div className='flex flex-wrap items-center'>
                 {/* Copyright */}
                 <div className='w-full text-center'>
@@ -14,8 +14,8 @@ const Footer = () => {
                 {/* Footer Links */}
                 <div className='w-full'>
                     <nav className='footer-links text-center pt-2'>
-                        <a href="#hero" className="scrollto">Home</a>
-                        <a href="#about" className="scrollto">About</a>
+                        <a href="/" className="scrollto px-2">Home</a>
+                        <a href="/#about" className="scrollto px-2">About</a>
                     </nav>
                 </div>
             </div>
