@@ -57,6 +57,9 @@ const Record = (props) => (
 const Scholar = () => {
   const [records, setRecords] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  /* Limit to 12 scholars per page (to avoid crashes) */
+  const recordsPerPage = 12;
 
   useEffect(() => {
     async function getRecords() {
@@ -78,14 +81,14 @@ const Scholar = () => {
   };
 
   const removeFilter = (index) => {
-    const newFilters = filters.filter((_, i) => i !== index);
-    setFilters(newFilters);
+    setFilters(filters.filter((_, i) => i !== index));
   };
 
   const clearFilters = () => {
     setFilters([]);
   };
 
+  // Apply filters
   const filteredRecords = records.filter((record) => {
     return filters.every(({ type, value }) => {
       if (type === "name") {
@@ -94,6 +97,13 @@ const Scholar = () => {
       return record[type] === value;
     });
   });
+
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-2 sm:p-6">
@@ -182,32 +192,22 @@ const Scholar = () => {
         </div>
       </section>
 
-      {/* Scholar & Filter Directory */}
-      <section id="scholar-section" className="my-5 py-5">
-        <h2 className="text-xl font-semibold text-gray-800 text-center">
-          Scholar Directory
-        </h2>
-        <p className="text-gray-600 text-sm text-center">
-          Find scholars by expertise and availability.
-        </p>
+      {/* Scholar Directory */}
+      <section className="my-5 py-5">
+        <h2 className="text-xl font-semibold text-gray-800 text-center">Scholar Directory</h2>
+        <p className="text-gray-600 text-sm text-center">Find scholars by expertise and availability.</p>
+
         {/* Filter Section */}
         <div className="bg-white p-4 rounded-lg shadow mt-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">
-            Filter Scholars
-          </h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">Filter Scholars</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <input
               type="text"
               placeholder="Search by Name..."
               className="w-full px-3 py-2 border rounded-md"
-              onKeyDown={(e) =>
-                e.key === "Enter" && addFilter("name", e.target.value)
-              }
+              onKeyDown={(e) => e.key === "Enter" && addFilter("name", e.target.value)}
             />
-            <select
-              className="w-full px-3 py-2 border rounded-md"
-              onChange={(e) => addFilter("sponsor", e.target.value)}
-            >
+            <select className="w-full px-3 py-2 border rounded-md" onChange={(e) => addFilter("sponsor", e.target.value)}>
               <option value="">Select Sponsor</option>
               {[...new Set(records.map((r) => r.sponsor))].map((sponsor) => (
                 <option key={sponsor} value={sponsor}>
@@ -215,10 +215,7 @@ const Scholar = () => {
                 </option>
               ))}
             </select>
-            <select
-              className="w-full px-3 py-2 border rounded-md"
-              onChange={(e) => addFilter("major", e.target.value)}
-            >
+            <select className="w-full px-3 py-2 border rounded-md" onChange={(e) => addFilter("major", e.target.value)}>
               <option value="">Select Major</option>
               {[...new Set(records.map((r) => r.major))].map((major) => (
                 <option key={major} value={major}>
@@ -231,13 +228,11 @@ const Scholar = () => {
               onChange={(e) => addFilter("institution", e.target.value)}
             >
               <option value="">Select Institution</option>
-              {[...new Set(records.map((r) => r.institution))].map(
-                (institution) => (
-                  <option key={institution} value={institution}>
-                    {institution}
-                  </option>
-                )
-              )}
+              {[...new Set(records.map((r) => r.institution))].map((institution) => (
+                <option key={institution} value={institution}>
+                  {institution}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -245,15 +240,9 @@ const Scholar = () => {
           {filters.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
               {filters.map((filter, index) => (
-                <span
-                  key={index}
-                  className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md flex items-center gap-2"
-                >
+                <span key={index} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md flex items-center gap-2">
                   {filter.type}: {filter.value}
-                  <button
-                    className="ml-2 bg-red-500 text-white rounded-full px-2"
-                    onClick={() => removeFilter(index)}
-                  >
+                  <button className="ml-2 bg-red-500 text-white rounded-full px-2" onClick={() => removeFilter(index)}>
                     ×
                   </button>
                 </span>
@@ -261,31 +250,31 @@ const Scholar = () => {
             </div>
           )}
 
-          {/* Buttons for Clearing Filters */}
+          {/* Clear Filters Button */}
           {filters.length > 0 && (
             <div className="mt-4">
-              <button
-                onClick={clearFilters}
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
-              >
+              <button onClick={clearFilters} className="bg-red-500 text-white px-4 py-2 rounded-md">
                 Clear Filters
               </button>
             </div>
           )}
         </div>
 
-        {/* Scholar Profile Modal Section */}
-        <div className="grid justify-items-center mt-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl">
-          {filteredRecords.length > 0 ? (
-            filteredRecords.map((record) => (
-              <Record record={record} key={record._id} />
-            ))
-          ) : (
-            <p className="text-center mt-4 text-gray-500 col-span-full">
-              No scholars found.
-            </p>
-          )}
+        {/* Scholar List */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+          {currentRecords.length > 0 ? currentRecords.map((record) => <Record record={record} key={record._id} />) : <p>No scholars found.</p>}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-10">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button key={i} onClick={() => setCurrentPage(i + 1)} className="mx-1 px-4 py-2 bg-[--color-primary] hover:bg-[--color-secondary] text-white rounded-md">
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
