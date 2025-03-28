@@ -27,9 +27,13 @@ export default function Navbar() {
         {/* Desktop Navbar */}
         <nav className="nav-menu hidden md:block text-white">
           <ul className="flex space-x-8">
-            <li><a href="#about" className="hover:text-opacity-80 transition">About</a></li>
+            <NavLink to="/#about">
+              <li><a className="hover:text-opacity-80 transition">About</a></li>
+            </NavLink>            
+            
+            <NavLink to="/#resource">
             <li className="relative group">
-              <a href="#resource" className="hover:text-opacity-80 transition">Resources</a>
+              <a className="hover:text-opacity-80 transition">Resources</a>
               <ul className="absolute hidden group-hover:block bg-[#F16767] p-2 rounded shadow-lg min-w-[200px] z-50">
                 <NavLink to="/scholar">
                   <li><a className="block p-2 hover:bg-gray-100 hover:rounded">Meet Your Scholars</a></li>
@@ -39,8 +43,14 @@ export default function Navbar() {
                 </NavLink>
               </ul>
             </li>
-            <li><a href="#faq" className="hover:text-opacity-80 transition">FAQ</a></li>
-            <li><a href="#contact" className="hover:text-opacity-80 transition">Contact Us</a></li>
+            </NavLink>
+            
+            <NavLink to="/#faq">
+              <li><a className="hover:text-opacity-80 transition">FAQ</a></li>
+            </NavLink>
+            <NavLink to="/#contact">
+              <li><a className="hover:text-opacity-80 transition">Contact Us</a></li>
+            </NavLink>
           </ul>
         </nav>
 

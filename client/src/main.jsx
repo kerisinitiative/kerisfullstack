@@ -131,7 +131,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dev",
-        element: <RecordList />,
+        element: <Dev />,
       },
     ],
   },
