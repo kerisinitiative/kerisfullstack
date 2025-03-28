@@ -8,6 +8,7 @@ const Home = () => {
       {/* Import Navbar Component */}
       <Navbar/>
       Home
+      {/* Import Footer Component */}
       <Footer/>
     </body>
   )
