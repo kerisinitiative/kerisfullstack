@@ -1,6 +1,6 @@
 import React from "react";
 import bgImg from "../assets/img/hero-bg1.jpg";
-import placeholderImg from "../assets/img/imgplaceholder.jpg"
+import placeholderImg from "../assets/img/imgplaceholder.jpg";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -25,20 +25,45 @@ const Record = (props) => (
         />
       )}
       <div className="p-4">
-        <h2 className="font-semibold flex items-center gap-2">
+        <h2 className="font-semibold text-lg flex items-center gap-2">
           {props.record.name}
         </h2>
         <div className="mt-2 flex flex-wrap gap-2">
-          # Note to self, add more atributes after Dayana and Zai sort the database
+          # Note to self, add more atributes after Dayana and Zai sort the
+          database
           <span className="bg-green-600 text-white text-sm px-3 py-1 rounded-md">
             {props.record.sponsor}
           </span>
-          <span className="bg-purple-600 text-white text-sm px-3 py-1 rounded-md">
-            {props.record.major}
-          </span>
-          <span className="bg-gray-600 text-white text-sm px-3 py-1 rounded-md">
-            {props.record.institution}
-          </span>
+          {/* Display array of majors */}
+          {(() => {
+            const majors = [];
+            for (let i = 0; i < props.record.major.length; i++) {
+              majors.push(
+                <span
+                  key={i}
+                  className="bg-purple-600 text-white text-sm px-3 py-1 rounded-md"
+                >
+                  {props.record.major[i]}
+                </span>
+              );
+            }
+            return majors;
+          })()}
+          {/* Display array of institutions */}
+          {(() => {
+            const institutions = [];
+            for (let i = 0; i < props.record.institution.length; i++) {
+              institutions.push(
+                <span
+                  key={i}
+                  className="bg-orange-600 text-white text-sm px-3 py-1 rounded-md"
+                >
+                  {props.record.institution[i]}
+                </span>
+              );
+            }
+            return institutions;
+          })()}
         </div>
 
         <div className="flex mt-3 gap-2">
@@ -74,6 +99,24 @@ const Scholar = () => {
     getRecords();
   }, []);
 
+  // Apply filters
+  const filteredRecords = records.filter((record) => {
+    return filters.every(({ type, value }) => {
+      if (type === "name") {
+        return record.name.toLowerCase().includes(value.toLowerCase());
+      }
+      if (type === "sponsor") {
+        return record.sponsor.toLowerCase().includes(value.toLowerCase());
+      }
+      // Handle array fields (major and institution)
+      if (Array.isArray(record[type])) {
+        return record[type].includes(value);
+      }
+      // Handle non-array fields
+      return record[type] === value;
+    });
+  });
+
   const addFilter = (type, value) => {
     if (value && !filters.some((f) => f.type === type && f.value === value)) {
       setFilters([...filters, { type, value }]);
@@ -88,22 +131,14 @@ const Scholar = () => {
     setFilters([]);
   };
 
-  // Apply filters
-  const filteredRecords = records.filter((record) => {
-    return filters.every(({ type, value }) => {
-      if (type === "name") {
-        return record.name.toLowerCase().includes(value.toLowerCase());
-      }
-      return record[type] === value;
-    });
-  });
-
   // Pagination Logic
   const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
-
+  const currentRecords = filteredRecords.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
 
   return (
     <div className="min-h-screen bg-gray-100 p-2 sm:p-6">
@@ -193,21 +228,46 @@ const Scholar = () => {
       </section>
 
       {/* Scholar Directory */}
-      <section className="my-5 py-5">
-        <h2 className="text-xl font-semibold text-gray-800 text-center">Scholar Directory</h2>
-        <p className="text-gray-600 text-sm text-center">Find scholars by expertise and availability.</p>
+      <section className="my-5 py-5" id="scholar-section">
+        <h2 className="text-xl font-semibold text-gray-800 text-center">
+          Scholar Directory
+        </h2>
+        <p className="text-gray-600 text-sm text-center">
+          Find scholars by expertise and availability.
+        </p>
 
         {/* Filter Section */}
         <div className="bg-white p-4 rounded-lg shadow mt-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">Filter Scholars</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Filter Scholars
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <input
               type="text"
               placeholder="Search by Name..."
               className="w-full px-3 py-2 border rounded-md"
-              onKeyDown={(e) => e.key === "Enter" && addFilter("name", e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.trim();
+                if (value === "") {
+                  setFilters(filters.filter((f) => f.type !== "name"));
+                } else {
+                  const existingIndex = filters.findIndex(
+                    (f) => f.type === "name"
+                  );
+                  if (existingIndex >= 0) {
+                    const newFilters = [...filters];
+                    newFilters[existingIndex].value = value;
+                    setFilters(newFilters);
+                  } else {
+                    addFilter("name", value);
+                  }
+                }
+              }}
             />
-            <select className="w-full px-3 py-2 border rounded-md" onChange={(e) => addFilter("sponsor", e.target.value)}>
+            <select
+              className="w-full px-3 py-2 border rounded-md"
+              onChange={(e) => addFilter("sponsor", e.target.value)}
+            >
               <option value="">Select Sponsor</option>
               {[...new Set(records.map((r) => r.sponsor))].map((sponsor) => (
                 <option key={sponsor} value={sponsor}>
@@ -215,20 +275,37 @@ const Scholar = () => {
                 </option>
               ))}
             </select>
-            <select className="w-full px-3 py-2 border rounded-md" onChange={(e) => addFilter("major", e.target.value)}>
+            {/* Update these select elements in your JSX */}
+            <select
+              className="w-full px-3 py-2 border rounded-md"
+              onChange={(e) =>
+                e.target.value && addFilter("major", e.target.value)
+              }
+            >
               <option value="">Select Major</option>
-              {[...new Set(records.map((r) => r.major))].map((major) => (
+              {[
+                ...new Set(
+                  records.flatMap((r) => r.major) // Flatten all majors into one array
+                ),
+              ].map((major) => (
                 <option key={major} value={major}>
                   {major}
                 </option>
               ))}
             </select>
+
             <select
               className="w-full px-3 py-2 border rounded-md"
-              onChange={(e) => addFilter("institution", e.target.value)}
+              onChange={(e) =>
+                e.target.value && addFilter("institution", e.target.value)
+              }
             >
               <option value="">Select Institution</option>
-              {[...new Set(records.map((r) => r.institution))].map((institution) => (
+              {[
+                ...new Set(
+                  records.flatMap((r) => r.institution) // Flatten all institutions into one array
+                ),
+              ].map((institution) => (
                 <option key={institution} value={institution}>
                   {institution}
                 </option>
@@ -240,9 +317,15 @@ const Scholar = () => {
           {filters.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
               {filters.map((filter, index) => (
-                <span key={index} className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md flex items-center gap-2">
+                <span
+                  key={index}
+                  className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md flex items-center gap-2"
+                >
                   {filter.type}: {filter.value}
-                  <button className="ml-2 bg-red-500 text-white rounded-full px-2" onClick={() => removeFilter(index)}>
+                  <button
+                    className="ml-2 bg-red-500 text-white rounded-full px-2"
+                    onClick={() => removeFilter(index)}
+                  >
                     ×
                   </button>
                 </span>
@@ -253,7 +336,10 @@ const Scholar = () => {
           {/* Clear Filters Button */}
           {filters.length > 0 && (
             <div className="mt-4">
-              <button onClick={clearFilters} className="bg-red-500 text-white px-4 py-2 rounded-md">
+              <button
+                onClick={clearFilters}
+                className="bg-red-500 text-white px-4 py-2 rounded-md"
+              >
                 Clear Filters
               </button>
             </div>
@@ -262,14 +348,24 @@ const Scholar = () => {
 
         {/* Scholar List */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
-          {currentRecords.length > 0 ? currentRecords.map((record) => <Record record={record} key={record._id} />) : <p>No scholars found.</p>}
+          {currentRecords.length > 0 ? (
+            currentRecords.map((record) => (
+              <Record record={record} key={record._id} />
+            ))
+          ) : (
+            <p>No scholars found.</p>
+          )}
         </div>
 
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center mt-10">
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} onClick={() => setCurrentPage(i + 1)} className="mx-1 px-4 py-2 bg-[--color-primary] hover:bg-[--color-secondary] text-white rounded-md">
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className="mx-1 px-4 py-2 bg-[--color-primary] hover:bg-[--color-secondary] text-white rounded-md"
+              >
                 {i + 1}
               </button>
             ))}

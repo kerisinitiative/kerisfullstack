@@ -23,7 +23,12 @@ const ScholarDetail = () => {
     fetchScholar();
   }, [id]);
 
-  if (loading) return <div className="text-center min-h-screen m-10"><strong>Loading...</strong></div>;
+  if (loading)
+    return (
+      <div className="text-center min-h-screen m-10">
+        <strong>Loading...</strong>
+      </div>
+    );
   if (!scholar)
     return (
       <div className="text-center m-10 min-h-screen text-[--color-primary]">
@@ -60,26 +65,60 @@ const ScholarDetail = () => {
         <h2 className="text-2xl font-semibold mb-4">Scholar Information </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <p>
-            <strong>Sponsor:</strong> {scholar.sponsor}
+            <strong>Sponsor:<br></br></strong> {scholar.sponsor}
           </p>
+          
           <p>
-            <strong>Major:</strong> {scholar.major}
+            <strong>Email:<br></br></strong> {scholar.email || "N/A"}
           </p>
+
+          {/* Display array of Majors */}
           <p>
-            <strong>Institution:</strong> {scholar.institution}
+            <strong>Institutions(s):<br></br></strong>
+            {(() => {
+              let output = [];
+              for (let i = 0; i < scholar.institution.length; i++) {
+                output.push(
+                  <span key={i}>
+                    {scholar.institution[i]}
+                    {i !== scholar.institution.length - 1 ? ", " : ""}
+                  </span>
+                );
+              }
+              return output;
+            })()}
           </p>
+
+          {/* Display array of Institutions */}
           <p>
-            <strong>Email:</strong> {scholar.email || "N/A"}
+            <strong>Major(s): <br></br></strong>
+            {(() => {
+              if (scholar.major.length === 0) {
+                return "Undeclared";
+              }
+
+              let output = [];
+              for (let i = 0; i < scholar.major.length; i++) {
+                output.push(
+                  <span key={i}>
+                    {scholar.major[i]}
+                    {i !== scholar.major.length - 1 ? ", " : ""}
+                  </span>
+                );
+              }
+              return output;
+            })()}
           </p>
         </div>
-        #Note: Add more atributes as Dayana and Zai create the schema for the database
+        #Note: Add more atributes as Dayana and Zai create the schema for the
+        database
       </div>
 
       {/* About Scholar Section */}
       <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
         <h2 className="text-2xl font-semibold mb-4">About {scholar.name}</h2>
-          {/* HTML Code of Scholar's Yapping */}
-          {scholar.aboutMe || "No details provided."}
+        {/* HTML Code of Scholar's Yapping */}
+        {scholar.aboutMe || "No details provided."}
       </div>
 
       {/* Back Button */}

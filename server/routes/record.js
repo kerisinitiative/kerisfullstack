@@ -23,7 +23,10 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 });
 
-// Get all records
+/**
+ * Scholars Table
+ */
+// Get all scholars
 router.get("/", async (req, res) => {
   try {
     const collection = await db.collection("scholar_table");
@@ -35,22 +38,64 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a single record by ID
-router.get("/:id", async (req, res) => {
+/**
+ * Sponsors Table
+ */
+// Get all sponsors *** DIS MUST COME BEFORE GETTING SCHOLAR BY ID OR ELSE AN ERROR WILL BE THROWN!!!!
+router.get("/sponsors", async (req, res) => {
   try {
-    const collection = await db.collection("scholar_table");
-    const record = await collection.findOne({ _id: new ObjectId(req.params.id) });
-
-    if (!record) return res.status(404).send("Not found");
-    
-    res.status(200).json(record);
+    const collection = await db.collection("sponsor_table");
+    const sponsors = await collection.find({}).toArray();
+    res.status(200).json(sponsors);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Error retrieving record");
+    console.error("Error retrieving sponsors:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-// Create a new record (with optional image upload)
+// Get a single sponsor by ID
+router.get("/sponsors/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const collection = await db.collection("sponsor_table");
+    const sponsor = await collection.findOne({ _id: new ObjectId(id) });
+
+    if (!sponsor) return res.status(404).send("Sponsor not found");
+
+    res.status(200).json(sponsor);
+  } catch (error) {
+    console.error("Error retrieving sponsor:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Get a single scholar by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const collection = await db.collection("scholar_table");
+    const record = await collection.findOne({ _id: new ObjectId(id) });
+
+    if (!record) return res.status(404).send("Not found");
+
+    res.status(200).json(record);
+  } catch (error) {
+    console.error("Error retrieving record:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Create a new scholars (with optional image upload)
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     let imageUrl = null;
@@ -80,7 +125,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     const collection = await db.collection("scholar_table");
     const result = await collection.insertOne(newRecord);
-    
+
     res.status(201).json(result);
   } catch (error) {
     console.error(error);
@@ -88,7 +133,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-// Update a record by ID (with optional image upload)
+// Update a scholars by ID (with optional image upload)
 router.patch("/:id", upload.single("image"), async (req, res) => {
   try {
     let imageUrl = req.body.image; // Retain existing image unless a new one is uploaded
@@ -122,7 +167,8 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
     const collection = await db.collection("scholar_table");
     const result = await collection.updateOne(query, updates);
 
-    if (result.modifiedCount === 0) return res.status(404).send("No changes made or record not found");
+    if (result.modifiedCount === 0)
+      return res.status(404).send("No changes made or record not found");
 
     res.status(200).json(result);
   } catch (error) {
@@ -131,14 +177,15 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
   }
 });
 
-// Delete a record by ID
+// Delete a scholars by ID
 router.delete("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
     const collection = await db.collection("scholar_table");
     const result = await collection.deleteOne(query);
 
-    if (result.deletedCount === 0) return res.status(404).send("Record not found");
+    if (result.deletedCount === 0)
+      return res.status(404).send("Record not found");
 
     res.status(200).json({ message: "Record deleted successfully" });
   } catch (error) {
