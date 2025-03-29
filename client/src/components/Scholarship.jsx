@@ -22,7 +22,7 @@ const formatDate = (dateString) => {
 const Record = (props) => (
   /* Modals for Scholar Record */
   <>
-    <div className="max-w-sm w-full bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="sm:max-w-sm w-full bg-white rounded-2xl shadow-lg overflow-hidden">
       {/* Display the profile image if it exists */}
       {props.sponsors?.image && (
         <img
@@ -302,7 +302,7 @@ const Scholarship = () => {
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className="mx-1 px-4 py-2 bg-[--color-primary] hover:bg-[--color-secondary] text-white rounded-md"
+                className="mx-1 px-2 bg-[--color-primary] hover:bg-[--color-secondary] text-white rounded-md"
               >
                 {i + 1}
               </button>

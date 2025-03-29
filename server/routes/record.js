@@ -133,12 +133,58 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-// Update a scholars by ID (with optional image upload)
+// Update a scholar by ID (with optional image upload)
 router.patch("/:id", upload.single("image"), async (req, res) => {
   try {
-    let imageUrl = req.body.image; // Retain existing image unless a new one is uploaded
+    const query = { _id: new ObjectId(req.params.id) };
+    const collection = await db.collection("scholar_table");
+    const currentRecord = await collection.findOne(query);
 
+    if (!currentRecord) {
+      return res.status(404).send("Record not found");
+    }
+
+    // Initialize updates without including the image field
+    const updates = {
+      $set: {},
+    };
+
+    // Track if any updates are provided
+    let hasUpdates = false;
+
+    // Add non-image fields only if they are provided
+    if (req.body.name) {
+      updates.$set.name = req.body.name;
+      hasUpdates = true;
+    }
+    if (req.body.email) {
+      updates.$set.email = req.body.email;
+      hasUpdates = true;
+    }
+    if (req.body.ig_acc) {
+      updates.$set.ig_acc = req.body.ig_acc;
+      hasUpdates = true;
+    }
+    if (req.body.about) {
+      updates.$set.about = req.body.about;
+      hasUpdates = true;
+    }
+    if (req.body.sponsor) {
+      updates.$set.sponsor = req.body.sponsor;
+      hasUpdates = true;
+    }
+    if (req.body.major) {
+      updates.$set.major = Array.isArray(req.body.major) ? req.body.major : [req.body.major];
+      hasUpdates = true;
+    }
+    if (req.body.institution) {
+      updates.$set.institution = Array.isArray(req.body.institution) ? req.body.institution : [req.body.institution];
+      hasUpdates = true;
+    }
+
+    // Handle image update only when necessary
     if (req.file) {
+      // New image uploaded, replace old one
       const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: `uploads/${Date.now()}_${req.file.originalname}`,
@@ -147,29 +193,45 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
       };
 
       const uploadResult = await s3.upload(uploadParams).promise();
-      imageUrl = uploadResult.Location;
+      updates.$set.image = uploadResult.Location;
+      hasUpdates = true;
+
+      // Delete old image if it exists
+      if (currentRecord.image) {
+        try {
+          const oldImageKey = currentRecord.image.split('/').pop();
+          await s3.deleteObject({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: `uploads/${oldImageKey}`,
+          }).promise();
+        } catch (deleteError) {
+          console.error("Error deleting old image:", deleteError);
+        }
+      }
+    } else if (req.body.imageAction === "remove") {
+      // Explicitly remove image
+      updates.$set.image = null;
+      hasUpdates = true;
+      
+      if (currentRecord.image) {
+        try {
+          const oldImageKey = currentRecord.image.split('/').pop();
+          await s3.deleteObject({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: `uploads/${oldImageKey}`,
+          }).promise();
+        } catch (deleteError) {
+          console.error("Error deleting old image:", deleteError);
+        }
+      }
     }
 
-    const query = { _id: new ObjectId(req.params.id) };
-    const updates = {
-      $set: {
-        name: req.body.name,
-        email: req.body.email,
-        ig_acc: req.body.ig_acc,
-        about: req.body.about,
-        sponsor: req.body.sponsor,
-        major: req.body.major,
-        institution: req.body.institution,
-        image: imageUrl,
-      },
-    };
+    // Perform update only if there's something to update
+    if (!hasUpdates) {
+      return res.status(400).json({ message: "No updates provided" });
+    }
 
-    const collection = await db.collection("scholar_table");
     const result = await collection.updateOne(query, updates);
-
-    if (result.modifiedCount === 0)
-      return res.status(404).send("No changes made or record not found");
-
     res.status(200).json(result);
   } catch (error) {
     console.error(error);

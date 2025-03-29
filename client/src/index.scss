@@ -21,6 +21,51 @@
   --line-height-base: 1.5;
 }
 
+/* ======== Rich Text Editor ========= */
+.ProseMirror {
+  min-height: 200px;
+  padding: 1rem;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+.ProseMirror h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 2em;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1em;
+  color: #666;
+  font-style: italic;
+}
+
 /* ========== BASE STYLES ========== */
 body {
   font-family: var(--font-primary);
@@ -36,7 +81,6 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
-  font-weight: 700;
   color: var(--color-dark);
   margin-top: 0;
 }
@@ -50,16 +94,9 @@ dt {
   font-size: 1.35em;
 }
 
-p {
-  font-size: 1.25rem; /* 20px */
-  line-height: 1.6;
-}
-
 hr {
   border: 0;
-  height: 1px;
   background-color: var(--color-highlight);
-  margin: 1.5rem 0;
 }
 
 /* ========== COMPONENTS ========== */
