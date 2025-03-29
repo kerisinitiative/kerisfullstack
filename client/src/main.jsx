@@ -26,141 +26,59 @@ import ScholarDetail from "./components/ScholarDetail";
 import Dashboard from "./components/Dashboard";
 import RecordScholar from "./components/RecordScholar";
 import RecordScholarship from "./components/RecordScholarship";
+import Login from "./components/Login"; // Import Login
+import ProtectedLayout from "./components/ProtectedLayout"; // Import Protected Layout
 
-/* Routes (pages) for the webapp */
 const router = createBrowserRouter([
-  /**
-   * client-side
-   **/
+  // Client-Side Routes
   {
     path: "/",
     element: <App />,
     children: [
-      // home page - route
-      {
-        index: true,
-        element: <Home />,
-      },
-      // scholar route
+      { index: true, element: <Home /> },
       {
         path: "scholar",
         children: [
-          // scholar list
-          {
-            index: true,
-            element: <Scholar />,
-          },
-          // scholar detail
-          {
-            path: "detail/:id",
-            element: <ScholarDetail />,
-          },
+          { index: true, element: <Scholar /> },
+          { path: "detail/:id", element: <ScholarDetail /> },
         ],
       },
-      // scholarship route
       {
         path: "scholarship",
         children: [
-          // scholarship list
-          {
-            index: true,
-            element: <Scholarship />,
-          },
-          // scholarship detail
-          {
-            path: "detail/:id",
-            element: <ScholarshipDetail />,
-          },
-        ,]
+          { index: true, element: <Scholarship /> },
+          { path: "detail/:id", element: <ScholarshipDetail /> },
+        ],
       },
     ],
   },
 
-  /** 
-   * admin-side
-   **/
+  // 🔒 Separate Login Route (NOT Protected)
+  {
+    path: "/admin/login",
+    element: <Login />, // Public login page
+  },
+
+  // 🔒 Protected Admin Routes (Requires Auth)
   {
     path: "/admin",
-    element: <App />,
+    element: (
+      <ProtectedLayout>  {/* Now only protects admin pages */}
+        <App />
+      </ProtectedLayout>
+    ),
     children: [
-      // admin dashboard page
-      {
-        index: true,
-        element: <Dashboard />,
-      },
-      // list of scholar record
-      {
-        path: "scholar-list",
-            element: <ScholarList />,
-      },
-      // add scholar
-      {
-        path: "scholar-list/add",
-            element: <RecordScholar />,
-      },
-      // edit scholar
-      {
-        path: "scholar-list/edit:id",
-            element: <RecordScholar />,
-      },
-      // list of scholarship record
-      {
-        path: "scholarship-list",
-            element: <ScholarshipList />,
-      },
-      // add scholarship
-      {
-        path: "scholarship-list/add",
-            element: <RecordScholarship />,
-      },
-      // edit scholarship
-      {
-        path: "scholarship-list/edit:id",
-            element: <RecordScholarship />,
-      },
-
+      { index: true, element: <Dashboard /> },
+      { path: "scholar-list", element: <ScholarList /> },
+      { path: "scholar-list/add", element: <RecordScholar /> },
+      { path: "scholar-list/edit/:id", element: <RecordScholar /> },
+      { path: "scholarship-list", element: <ScholarshipList /> },
+      { path: "scholarship-list/add", element: <RecordScholarship /> },
+      { path: "scholarship-list/edit/:id", element: <RecordScholarship /> },
     ],
   },
-
-  /** 
-   * Dev Page
-   **/
-  {
-    path: "/dev",
-    element: <App />,
-    children: [
-      {
-        path: "/dev",
-        element: <Dev />,
-      },
-    ],
-  },
-
-
-  /* Old stuff
-  {
-    path: "/edit/:id",
-    element: <App />,
-    children: [
-      {
-        path: "/edit/:id",
-        element: <Record />,
-      },
-    ],
-  },
-  {
-    path: "/create",
-    element: <App />,
-    children: [
-      {
-        path: "/create",
-        element: <Record />,
-      },
-    ],
-  },
-  */
-
 ]);
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
