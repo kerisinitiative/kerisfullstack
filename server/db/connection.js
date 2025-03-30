@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 // Load environment variables from config.env
 dotenv.config();
 
-const URL = process.env.ATLAS_URL || "";
+const URL = "mongodb+srv://admin:ajakajakpiqim2023@keriscluster.rgslz.mongodb.net/?retryWrites=true&w=majority&appName=KerisCluster";
 const client = new MongoClient(URL, {
   serverApi: {
     version: ServerApiVersion.v1,
