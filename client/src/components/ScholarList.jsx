@@ -53,7 +53,7 @@ export default function ScholarRecords() {
 
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/`);
       if (!response.ok) {
         console.error(`An error occurred: ${response.statusText}`);
         return;
@@ -71,7 +71,7 @@ export default function ScholarRecords() {
   }, []);
 
   async function deleteRecord(id) {
-    await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${id}`, {
+    await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${id}`, {
       method: "DELETE",
     });
     setRecords((prevRecords) => prevRecords.filter((el) => el._id !== id));

@@ -22,7 +22,7 @@ export default function EditScholar() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${params.id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${params.id}`
         );
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
@@ -98,7 +98,7 @@ export default function EditScholar() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${params.id}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${params.id}`,
         {
           method: "PATCH",
           body: formData,

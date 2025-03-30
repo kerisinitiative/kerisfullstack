@@ -95,7 +95,7 @@ const Scholarship = () => {
 
   useEffect(() => {
     async function getSponsors() {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors`);
       if (!response.ok) {
         console.error(`An error occurred: ${response.statusText}`);
         return;

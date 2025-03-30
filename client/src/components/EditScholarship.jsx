@@ -23,7 +23,7 @@ export default function EditSponsor() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors/${params.id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors/${params.id}`
         );
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
@@ -100,7 +100,7 @@ export default function EditSponsor() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors/${params.id}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors/${params.id}`,
         {
           method: "PATCH",
           body: formData,

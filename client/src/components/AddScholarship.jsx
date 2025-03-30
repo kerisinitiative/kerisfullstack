@@ -26,7 +26,7 @@ export default function SponsorForm() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors/${params.id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors/${params.id}`
         );
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
@@ -113,7 +113,7 @@ export default function SponsorForm() {
   
       if (form.image) formData.append("image", form.image);
   
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors`, {
         method: "POST",
         body: formData,
       });

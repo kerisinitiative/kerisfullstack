@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import records from "./record.js";
+import records from "../record/record.js";
 import dotenv from "dotenv";
 
 dotenv.config(); // Load environment variables
@@ -16,7 +16,7 @@ app.use(cors(
   }
 ));
 app.use(express.json());
-app.use("/record", records);
+app.use("/", records);
 
 // Start the Express server
 app.listen(PORT, () => {

@@ -26,7 +26,7 @@ const ScholarshipDetail = () => {
     async function fetchSponsor() {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors/${id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors/${id}`
         );
         if (!response.ok) throw new Error("Sponsor not found");
         const data = await response.json();

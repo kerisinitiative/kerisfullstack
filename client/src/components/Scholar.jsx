@@ -102,7 +102,7 @@ const Scholar = () => {
 
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/`);
       if (!response.ok) {
         console.error(`An error occurred: ${response.statusText}`);
         return;

@@ -26,7 +26,7 @@ export default function Record() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${params.id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${params.id}`
         );
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
@@ -129,12 +129,12 @@ export default function Record() {
 
       let response;
       if (!params.id) {
-        response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record`, {
+        response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/`, {
           method: "POST",
           body: formData,
         });
       } else {
-        response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${params.id}`, {
+        response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/${params.id}`, {
           method: "PATCH",
           body: formData,
         });

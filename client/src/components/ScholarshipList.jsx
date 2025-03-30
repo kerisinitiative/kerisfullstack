@@ -61,7 +61,7 @@ export default function SponsorRecords() {
 
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors`);
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors`);
       if (!response.ok) {
         console.error(`An error occurred: ${response.statusText}`);
         return;
@@ -79,7 +79,7 @@ export default function SponsorRecords() {
   }, []);
 
   async function deleteRecord(id) {
-    await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors/${id}`, {
+    await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/sponsors/${id}`, {
       method: "DELETE",
     });
     setRecords((prevRecords) => prevRecords.filter((el) => el._id !== id));
