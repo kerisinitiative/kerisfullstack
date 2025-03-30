@@ -8,7 +8,13 @@ dotenv.config(); // Load environment variables
 const PORT = process.env.PORT || 5050;
 const app = express();
 
-app.use(cors());
+app.use(cors(
+  {
+    origin: [process.env.FRONTEND_URL],
+    methods: ["POST", "GET"],
+    credentials: true
+  }
+));
 app.use(express.json());
 app.use("/record", records);
 
