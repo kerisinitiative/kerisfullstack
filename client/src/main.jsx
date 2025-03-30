@@ -33,7 +33,8 @@ const router = createBrowserRouter([
   // Client-Side Routes
   {
     path: "/",
-    element: <App />,
+    element: 
+    <App />,
     children: [
       { index: true, element: <Home /> },
       {

@@ -1,13 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 const App = () => {
-  return(
+  const location = useLocation();
+  
+  // Optional: Hide Navbar/Footer for specific routes
+  const hideLayout = location.pathname === '/admin/login'; // Example
+  
+  return (
     <div className="w-full">
-      <Navbar />
+      {!hideLayout && <Navbar />}
       <Outlet />
-      <Footer />
+      {!hideLayout && <Footer />}
     </div>
   );
 };
