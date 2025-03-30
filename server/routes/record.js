@@ -100,7 +100,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     if (req.file) {
       const uploadParams = {
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: import.meta.env.AWS_BUCKET_NAME,
         Key: `uploads/${Date.now()}_${req.file.originalname}`,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
