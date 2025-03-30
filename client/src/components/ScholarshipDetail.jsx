@@ -26,7 +26,7 @@ const ScholarshipDetail = () => {
     async function fetchSponsor() {
       try {
         const response = await fetch(
-          `http://localhost:5050/record/sponsors/${id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/sponsors/${id}`
         );
         if (!response.ok) throw new Error("Sponsor not found");
         const data = await response.json();
@@ -60,7 +60,7 @@ const ScholarshipDetail = () => {
     return (
       <div className="text-center m-10 min-h-screen text-[--color-primary]">
         <strong>
-          Sponsor not found :/ http://localhost:5050/sponsors/${id}{" "}
+          Sponsor not found
         </strong>
         <div className="text-center m-6 text-white">
           <Link to="/sponsors">

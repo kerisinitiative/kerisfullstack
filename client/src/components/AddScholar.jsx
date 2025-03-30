@@ -26,7 +26,7 @@ export default function Record() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:5050/record/${params.id}`
+          `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${params.id}`
         );
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
@@ -47,7 +47,7 @@ export default function Record() {
         });
 
         if (record.image) {
-          setPreview(`http://localhost:5050/uploads/${record.image}`);
+          setPreview(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/uploads/${record.image}`);
         }
       } catch (error) {
         console.error(error);
@@ -129,12 +129,12 @@ export default function Record() {
 
       let response;
       if (!params.id) {
-        response = await fetch("http://localhost:5050/record", {
+        response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record`, {
           method: "POST",
           body: formData,
         });
       } else {
-        response = await fetch(`http://localhost:5050/record/${params.id}`, {
+        response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${params.id}`, {
           method: "PATCH",
           body: formData,
         });

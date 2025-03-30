@@ -11,7 +11,7 @@ const ScholarDetail = () => {
   useEffect(() => {
     async function fetchScholar() {
       try {
-        const response = await fetch(`http://localhost:5050/record/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/record/${id}`);
         if (!response.ok) throw new Error("Scholar not found");
         const data = await response.json();
         setScholar(data);
