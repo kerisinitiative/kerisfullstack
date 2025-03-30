@@ -62,14 +62,22 @@ const ScholarDetail = () => {
       >
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10 p-4">
-          <h1 className="text-4xl text-[--color-light] font-bold mb-2">
+          <h1 className="text-4xl text-[--color-light] font-bold">
             {scholar.name}
           </h1>
           {scholar.sponsor && (
-            <p className="text-xl text-[--color-light]">
+            <p className="text-xl text-[--color-light] mb-2">
               {scholar.sponsor} Scholar
             </p>
           )}
+          <p className="text-md text-[--color-light]">
+                {scholar.availability === true
+                ? "Available for Mentorship: ✅" // if available
+                : scholar.availability === false
+                ? "Unavailable for Mentorship: ❌" // if unavailable
+                : "Invalid: ❓" // if null or invalid 
+                }
+          </p>
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import placeholderImg from "../assets/img/imgplaceholder.jpg";
 
 const Record = ({ record, deleteRecord }) => {
   // Helper function to safely handle array fields
@@ -17,21 +16,13 @@ const Record = ({ record, deleteRecord }) => {
       <td className="p-2 border-r">{safeJoin(record.major)}</td>
       <td className="p-2 border-r">{safeJoin(record.institution)}</td>
       <td className="p-2 border-r">{record.email}</td>
-      <td className="p-2 border-r">
-        {record.image ? (
-          <img
-            src={record.image}
-            alt={record.name}
-            className="w-16 h-16 object-cover"
-          />
-        ) : (
-          <img
-            src={placeholderImg}
-            alt="Profile"
-            className="w-16 h-16 object-cover"
-          />
-        )}
-      </td>
+      <td className="p-1 border-r text-center">
+        {record.availability === true
+                ? "✅" // if available
+                : record.availability === false
+                ? "❌" // if unavailable
+                : "❓" // if null or invalid 
+                }</td>
       <td className="p-2 flex gap-2">
         <Link className="text-blue-500 hover:underline" to={`edit/${record._id}`}>
           Edit
@@ -137,7 +128,7 @@ export default function ScholarRecords() {
                 <th className="p-2 border-r">Major</th>
                 <th className="p-2 border-r">Institution</th>
                 <th className="p-2 border-r">Email</th>
-                <th className="p-2 border-r">Image</th>
+                <th className="p-2 border-r">Availability</th>
                 <th className="p-2">Actions</th>
               </tr>
             </thead>

@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import placeholderImg from "../assets/img/imgplaceholdersponsors.jpg";
+import DOMPurify from 'dompurify'; // For XSS protection
+
+// Date formatting function
+const formatDate = (dateString) => {
+  if (!dateString) return "Present"; // Handle empty/undefined dates
+
+  const date = new Date(dateString);
+
+  // Get day, month (0-11 so we add 1), and year
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
 
 const ScholarshipDetail = () => {
   const { id } = useParams(); // Get sponsor ID from the URL
@@ -25,12 +40,21 @@ const ScholarshipDetail = () => {
     fetchSponsor();
   }, [id]);
 
+    // Safe HTML render function
+    const renderHTML = (html) => {
+      if (!html) return "No details provided.";
+      const cleanHTML = DOMPurify.sanitize(html);
+      return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: cleanHTML }} />;
+    };
+  
+
   if (loading)
     return (
       <div className="text-center min-h-screen m-10">
         <strong>Loading...</strong>
       </div>
     );
+    
 
   if (!sponsor)
     return (
@@ -60,61 +84,82 @@ const ScholarshipDetail = () => {
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <h1 className="text-4xl text-[--color-light] font-bold relative z-10">
-          {sponsor.sponsor}
-        </h1>
-      </div>
-
-      {/* Sponsor Information Grid */}
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
-        <h2 className="text-2xl font-semibold mb-4">Sponsor Information</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <p>
-            <strong>
-              Status:<br></br>
-            </strong>{" "}
-            {sponsor.status || "N/A"}
-          </p>
-
-          <p>
-            <strong>
-              Link:<br></br>
-            </strong>
-            <a
-              href={sponsor.link || "#"}
-              className="hover:text-[--color-secondary]"
-            >
-              {sponsor.link || "N/A"}
-            </a>
-          </p>
-
-          {/* Display array of Supported Institutions */}
-          <p>
-            <strong>
-              Program:<br></br>
-            </strong>
-            {sponsor.programs && sponsor.programs.length > 0
-              ? sponsor.programs.join(", ")
-              : "None"}
-          </p>
-
-          {/* Display array of Sponsored Majors */}
-          <p>
-            <strong>
-              Sponsored Majors:<br></br>
-            </strong>
-            {sponsor.majors_offered && sponsor.majors_offered.length > 0
-              ? sponsor.majors_offered.join(", ")
-              : "None"}
+        <div className="relative z-10 p-4">
+          <h1 className="text-4xl text-[--color-light] font-bold mb-2">
+            {sponsor.sponsor}
+          </h1>
+          <p className="text-md text-[--color-light]">
+            {
+              sponsor.status === true
+                ? "Application Open: ✅" // if available
+                : sponsor.status === false
+                ? "Application Closed: ❌" // if unavailable
+                : "Invalid: ❓" // if null or invalid
+            }
           </p>
         </div>
-        # Note to self, add more attributes after Zai and Dayana work on it
       </div>
 
-      {/* About Sponsor Section */}
+      {/* Scholarship Information Grid */}
+      <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg -mt-16 relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">General</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold text-gray-700">Application Date(s)</h3>
+                <p className="gap-2">
+                  {formatDate(sponsor.time_start)} →{" "}
+                  {formatDate(sponsor.time_end)}
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-700">Application Link</h3>
+                <p>
+                  {sponsor.link ? (
+                    <a
+                      href={`${sponsor.link}`}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                    >
+                      {sponsor.link}
+                    </a>
+                  ) : (
+                    "N/A"
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Education</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold text-gray-700">Major(s)</h3>
+                <p>
+                  {sponsor.majors_offered?.length > 0
+                    ? sponsor.majors_offered.join(", ")
+                    : "Not specified"}
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-700">Program(s)</h3>
+                <p>
+                  {sponsor.programs?.length > 0
+                    ? sponsor.programs.join(", ")
+                    : "Not specified"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* About Scholar Section */}
       <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
         <h2 className="text-2xl font-semibold mb-4">About {sponsor.sponsor}</h2>
-        {sponsor.about || "No details provided."}
+        {renderHTML(sponsor.about)}
       </div>
 
       {/* Back Button */}

@@ -5,8 +5,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import Record from "./components/Record";
-import RecordList from "./components/RecordList";
 
 // Import main App
 import App from "./App";
@@ -24,11 +22,12 @@ import Scholarship from "./components/Scholarship";
 import ScholarshipDetail from "./components/ScholarshipDetail";
 import ScholarDetail from "./components/ScholarDetail";
 import Dashboard from "./components/Dashboard";
-import RecordScholarship from "./components/RecordScholarship";
 import Login from "./components/Login"; // Import Login
 import ProtectedLayout from "./components/ProtectedLayout"; // Import Protected Layout
 import EditScholar from "./components/EditScholar";
 import AddScholar from "./components/AddScholar";
+import EditScholarship from "./components/EditScholarship";
+import AddScholarship from "./components/AddScholarship";
 
 const router = createBrowserRouter([
   // Client-Side Routes
@@ -74,14 +73,14 @@ const router = createBrowserRouter([
       { path: "scholar-list/add", element: <AddScholar /> },
       { path: "scholar-list/edit/:id", element: <EditScholar /> },
       { path: "scholarship-list", element: <ScholarshipList /> },
-      { path: "scholarship-list/add", element: <RecordScholarship /> },
-      { path: "scholarship-list/edit/:id", element: <RecordScholarship /> },
+      { path: "scholarship-list/add", element: <AddScholarship /> },
+      { path: "scholarship-list/edit/:id", element: <EditScholarship /> },
     ],
   },
 
   {
     path: "/dev",
-    element: <Record />, // dev test page
+    element: <Dev />, // dev test page
   },
 
 ]);

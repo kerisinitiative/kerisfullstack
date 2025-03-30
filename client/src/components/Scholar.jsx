@@ -28,9 +28,23 @@ const Record = (props) => (
         <h2 className="font-semibold text-lg flex items-center gap-2">
           {props.record.name}
         </h2>
+        <p className="text-xs">
+          <a
+            href={`mailto:${props.record.email}`}
+            className="text-blue-600 hover:underline"
+          >
+            {props.record.email}
+          </a>{" "}
+          ||
+          {
+            props.record.availability === true
+              ? "✅" // if available
+              : props.record.availability === false
+              ? "❌" // if unavailable
+              : "❓" // if null or invalid
+          }
+        </p>
         <div className="mt-2 flex flex-wrap gap-2">
-          # Note to self, add more atributes after Dayana and Zai sort the
-          database
           <span className="bg-green-600 text-white text-sm px-3 py-1 rounded-md">
             {props.record.sponsor}
           </span>
@@ -107,6 +121,11 @@ const Scholar = () => {
       }
       if (type === "sponsor") {
         return record.sponsor.toLowerCase().includes(value.toLowerCase());
+      }
+      if (type === "availability") {
+        if (value === "Available") return record.availability === true;
+        if (value === "Unavailable") return record.availability === false;
+        return true;
       }
       // Handle array fields (major and institution)
       if (Array.isArray(record[type])) {
@@ -241,29 +260,45 @@ const Scholar = () => {
           <h2 className="text-lg font-semibold text-gray-800 mb-3">
             Filter Scholars
           </h2>
+          <input
+            type="text"
+            placeholder="Search by Name..."
+            className="w-full px-3 py-2 border rounded-md mb-2"
+            onChange={(e) => {
+              const value = e.target.value.trim();
+              if (value === "") {
+                setFilters(filters.filter((f) => f.type !== "name"));
+              } else {
+                const existingIndex = filters.findIndex(
+                  (f) => f.type === "name"
+                );
+                if (existingIndex >= 0) {
+                  const newFilters = [...filters];
+                  newFilters[existingIndex].value = value;
+                  setFilters(newFilters);
+                } else {
+                  addFilter("name", value);
+                }
+              }
+            }}
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <input
-              type="text"
-              placeholder="Search by Name..."
+            <select
               className="w-full px-3 py-2 border rounded-md"
               onChange={(e) => {
-                const value = e.target.value.trim();
-                if (value === "") {
-                  setFilters(filters.filter((f) => f.type !== "name"));
+                if (e.target.value) {
+                  addFilter("availability", e.target.value);
                 } else {
-                  const existingIndex = filters.findIndex(
-                    (f) => f.type === "name"
-                  );
-                  if (existingIndex >= 0) {
-                    const newFilters = [...filters];
-                    newFilters[existingIndex].value = value;
-                    setFilters(newFilters);
-                  } else {
-                    addFilter("name", value);
-                  }
+                  // Remove availability filter if empty option selected
+                  setFilters(filters.filter((f) => f.type !== "availability"));
                 }
               }}
-            />
+            >
+              <option value="">Select Availability</option>
+              <option value="Available">Available</option>
+              <option value="Unavailable">Unavailable</option>
+            </select>
+
             <select
               className="w-full px-3 py-2 border rounded-md"
               onChange={(e) => addFilter("sponsor", e.target.value)}
@@ -275,7 +310,7 @@ const Scholar = () => {
                 </option>
               ))}
             </select>
-            {/* Update these select elements in your JSX */}
+
             <select
               className="w-full px-3 py-2 border rounded-md"
               onChange={(e) =>

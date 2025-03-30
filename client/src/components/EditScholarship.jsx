@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RichTextEditor from "./RichTextEditor";
 
-export default function EditScholar() {
+export default function EditSponsor() {
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    ig_acc: "",
-    about: "",
     sponsor: "",
-    major: "",
-    institution: "",
+    status: true,
+    time_start: "",
+    time_end: "",
+    about: "",
+    majors_offered: "",
+    programs: "",
+    link: "",
     image: null,
   });
   const [preview, setPreview] = useState(null);
@@ -22,7 +23,7 @@ export default function EditScholar() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:5050/record/${params.id}`
+          `http://localhost:5050/record/sponsors/${params.id}`
         );
         if (!response.ok) throw new Error(`Error: ${response.statusText}`);
 
@@ -31,12 +32,14 @@ export default function EditScholar() {
 
         setForm({
           ...record,
-          major: Array.isArray(record.major)
-            ? record.major.join(", ")
-            : record.major || "",
-          institution: Array.isArray(record.institution)
-            ? record.institution.join(", ")
-            : record.institution || "",
+          majors_offered: Array.isArray(record.majors_offered)
+            ? record.majors_offered.join(", ")
+            : record.majors_offered || "",
+          programs: Array.isArray(record.programs)
+            ? record.programs.join(", ")
+            : record.programs || "",
+          time_start: record.time_start ? record.time_start.split('T')[0] : "",
+          time_end: record.time_end ? record.time_end.split('T')[0] : "",
         });
 
         if (record.image) {
@@ -66,26 +69,25 @@ export default function EditScholar() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("email", form.email);
-    if (form.ig_acc) formData.append("ig_acc", form.ig_acc);
-    formData.append("about", form.about);
     formData.append("sponsor", form.sponsor);
-    formData.append("availability", form.availability);
+    formData.append("status", form.status);
+    formData.append("time_start", form.time_start);
+    formData.append("time_end", form.time_end);
+    formData.append("link", form.link);
+    formData.append("about", form.about);
 
     // Handle array fields
-    const majors = form.major
+    const majors_offered = form.majors_offered
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item);
-    const institutions = form.institution
+    const programs = form.programs
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item);
-    majors.forEach((major) => formData.append("major[]", major));
-    institutions.forEach((institution) =>
-      formData.append("institution[]", institution)
-    );
+      
+    majors_offered.forEach((major) => formData.append("majors_offered[]", major));
+    programs.forEach((program) => formData.append("programs[]", program));
 
     // Image handling
     if (form.image instanceof File) {
@@ -98,7 +100,7 @@ export default function EditScholar() {
 
     try {
       const response = await fetch(
-        `http://localhost:5050/record/${params.id}`,
+        `http://localhost:5050/record/sponsors/${params.id}`,
         {
           method: "PATCH",
           body: formData,
@@ -107,10 +109,10 @@ export default function EditScholar() {
 
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
-      navigate("/admin/scholar-list");
+      navigate("/admin/scholarship-list");
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to update record: " + error.message);
+      alert("Failed to update sponsor: " + error.message);
     }
   }
 
@@ -121,61 +123,61 @@ export default function EditScholar() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 max-w-6xl">
-      <h3 className="text-2xl font-bold mb-6">Edit Scholar Record</h3>
+      <h3 className="text-2xl font-bold mb-6">Edit Sponsor Record</h3>
 
       <form onSubmit={onSubmit} className="bg-white shadow-md rounded-lg p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          {/* Column 1: Personal Info */}
+          {/* Column 1: Sponsor Info */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Name*
+                Sponsor Name*
               </label>
               <input
                 type="text"
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={form.name}
-                onChange={(e) => updateForm({ name: e.target.value })}
+                value={form.sponsor}
+                onChange={(e) => updateForm({ sponsor: e.target.value })}
                 required
               />
             </div>
 
-            {/* Availability Radio Buttons */}
+            {/* Status Radio Buttons */}
             <div className="sm:col-span-4">
               <label className="block text-sm font-medium leading-6 text-slate-900">
-                Availability*
+                Status*
               </label>
               <div className="mt-2 space-y-2">
                 <div className="flex items-center">
                   <input
                     type="radio"
-                    id="available"
-                    name="availability"
-                    checked={form.availability === true}
-                    onChange={() => updateForm({ availability: true })}
+                    id="active"
+                    name="status"
+                    checked={form.status === true}
+                    onChange={() => updateForm({ status: true })}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                   />
                   <label
-                    htmlFor="available"
+                    htmlFor="active"
                     className="ml-2 block text-sm text-gray-900"
                   >
-                    Available
+                    Active
                   </label>
                 </div>
                 <div className="flex items-center">
                   <input
                     type="radio"
-                    id="unavailable"
-                    name="availability"
-                    checked={form.availability === false}
-                    onChange={() => updateForm({ availability: false })}
+                    id="inactive"
+                    name="status"
+                    checked={form.status === false}
+                    onChange={() => updateForm({ status: false })}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                   />
                   <label
-                    htmlFor="unavailable"
+                    htmlFor="inactive"
                     className="ml-2 block text-sm text-gray-900"
                   >
-                    Unavailable
+                    Inactive
                   </label>
                 </div>
               </div>
@@ -183,83 +185,83 @@ export default function EditScholar() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email*
+                Website Link
               </label>
               <input
-                type="email"
+                type="url"
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
-                value={form.email}
-                onChange={(e) => updateForm({ email: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Instagram
-              </label>
-              <input
-                type="text"
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
-                value={form.ig_acc}
-                onChange={(e) => updateForm({ ig_acc: e.target.value })}
-                placeholder="@username"
+                value={form.link}
+                onChange={(e) => updateForm({ link: e.target.value })}
+                placeholder="https://example.com"
               />
             </div>
           </div>
 
-          {/* Column 2: Academic Info */}
+          {/* Column 2: Program Info */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Sponsor*
+                Start Date*
               </label>
               <input
-                type="text"
+                type="date"
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
-                value={form.sponsor}
-                onChange={(e) => updateForm({ sponsor: e.target.value })}
+                value={form.time_start}
+                onChange={(e) => updateForm({ time_start: e.target.value })}
                 required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Major(s)*
+                End Date*
+              </label>
+              <input
+                type="date"
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                value={form.time_end}
+                onChange={(e) => updateForm({ time_end: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Majors Offered*
               </label>
               <input
                 type="text"
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
-                placeholder="Computer Science, Mathematics"
-                value={form.major}
-                onChange={(e) => updateForm({ major: e.target.value })}
+                placeholder="Computer Science, Engineering"
+                value={form.majors_offered}
+                onChange={(e) => updateForm({ majors_offered: e.target.value })}
                 required
               />
               <p className="text-xs text-gray-500 mt-1">
                 Separate multiple majors with commas
               </p>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Institution(s)*
-              </label>
-              <input
-                type="text"
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
-                placeholder="University of California, Stanford"
-                value={form.institution}
-                onChange={(e) => updateForm({ institution: e.target.value })}
-                required
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Separate multiple institutions with commas
-              </p>
-            </div>
           </div>
 
           {/* Column 3: Image Upload */}
           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Programs*
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="Scholarship, Internship"
+                value={form.programs}
+                onChange={(e) => updateForm({ programs: e.target.value })}
+                required
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Separate multiple programs with commas
+              </p>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Update Image
@@ -323,7 +325,7 @@ export default function EditScholar() {
         <div className="flex justify-end space-x-3 pt-4 border-t">
           <button
             type="button"
-            onClick={() => navigate("/admin/scholar-list")}
+            onClick={() => navigate("/admin/scholarship-list")}
             className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Cancel
@@ -332,7 +334,7 @@ export default function EditScholar() {
             type="submit"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
-            Update Record
+            Update Sponsor
           </button>
         </div>
       </form>

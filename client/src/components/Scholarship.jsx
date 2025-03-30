@@ -15,7 +15,7 @@ const formatDate = (dateString) => {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
 
-  return `${day}:${month}:${year}`;
+  return `${day}/${month}/${year}`;
 };
 
 /* Fetch database records and display in modals */
@@ -43,20 +43,18 @@ const Record = (props) => (
         <h2 className="font-semibold text-lg flex items-center gap-2">
           {props.sponsors.sponsor}
         </h2>
-        <h2 className="text-md font-semibold flex items-center gap-2">
+        <p className="text-xs flex items-center gap-2">
           {formatDate(props.sponsors.time_start)} →{" "}
           {formatDate(props.sponsors.time_end)}
-        </h2>
+        </p>
         <div className="mt-2 flex flex-wrap gap-2">
-          # Note to self, add more atributes after Dayana and Zai sort the
-          database
           {/* Display Status */}
           <span
             className={`text-white text-sm px-3 py-1 rounded-md ${
-              props.sponsors.status === "Active" ? "bg-green-600" : "bg-red-600"
+              props.sponsors.status === true ? "bg-green-600" : "bg-red-600"
             }`}
           >
-            {props.sponsors.status}
+            {props.sponsors.status === true ? "Active" : "Inactive"}
           </span>
           {/* Display array of programs */}
           {(() => {
@@ -65,7 +63,7 @@ const Record = (props) => (
               programs.push(
                 <span
                   key={i}
-                  className="bg-purple-600 text-white text-sm px-3 py-1 rounded-md"
+                  className="bg-blue-600 text-white text-sm px-3 py-1 rounded-md"
                 >
                   {props.sponsors.programs[i]}
                 </span>
@@ -116,6 +114,12 @@ const Scholarship = () => {
       }
       if (type === "name") {
         return sponsor.name.toLowerCase().includes(value.toLowerCase());
+      }
+      // Handle status field
+      if (type === "status") {
+        if (value === "Active") return sponsor.status === true;
+        if (value === "Inactive") return sponsor.status === false;
+        return true;
       }
       // Handle array fields
       if (Array.isArray(sponsor[type])) {
@@ -222,15 +226,20 @@ const Scholarship = () => {
             />
             <select
               className="w-full px-3 py-2 border rounded-md"
-              onChange={(e) => addFilter("status", e.target.value)}
+              onChange={(e) => {
+                if (e.target.value) {
+                  addFilter("status", e.target.value);
+                } else {
+                  // Remove status filter if empty option selected
+                  setFilters(filters.filter((f) => f.type !== "status"));
+                }
+              }}
             >
-              <option value="">Select Status</option>
-              {[...new Set(sponsors.map((r) => r.status))].map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
+              <option value="">Select Availability</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
             </select>
+
             {/* Array of Majors */}
             <select
               className="w-full px-3 py-2 border rounded-md"

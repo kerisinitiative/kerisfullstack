@@ -23,9 +23,6 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 });
 
-/**
- * Scholars Table
- */
 // Get all scholars
 router.get("/", async (req, res) => {
   try {
@@ -38,10 +35,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-/**
- * Sponsors Table
- */
-// Get all sponsors *** DIS MUST COME BEFORE GETTING SCHOLAR BY ID OR ELSE AN ERROR WILL BE THROWN!!!!
+// Get all sponsors
 router.get("/sponsors", async (req, res) => {
   try {
     const collection = await db.collection("sponsor_table");
@@ -95,7 +89,11 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Create a new scholars (with optional image upload)
+/**
+ * SCHOLAR SERVER ACTIONS
+ */
+
+// Add new scholar (with optional image upload)
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     let imageUrl = null;
@@ -112,23 +110,33 @@ router.post("/", upload.single("image"), async (req, res) => {
       imageUrl = uploadResult.Location;
     }
 
+    // Parse array fields
+    const majors = Array.isArray(req.body.major) ? req.body.major : [req.body.major].filter(Boolean);
+    const institutions = Array.isArray(req.body.institution) ? req.body.institution : [req.body.institution].filter(Boolean);
+
+    // Handle availability - FormData sends it as string 'true' or 'false'
+    const availability = req.body.availability === 'true';
+
     const newRecord = {
       name: req.body.name,
       email: req.body.email,
       ig_acc: req.body.ig_acc,
       about: req.body.about,
       sponsor: req.body.sponsor,
-      major: req.body.major,
-      institution: req.body.institution,
-      image: imageUrl, // Store image URL in MongoDB
+      major: majors,
+      institution: institutions,
+      availability: availability, // This is now properly converted to boolean
+      image: imageUrl,
     };
+
+    console.log('Creating new record:', newRecord); // Debug log
 
     const collection = await db.collection("scholar_table");
     const result = await collection.insertOne(newRecord);
 
     res.status(201).json(result);
   } catch (error) {
-    console.error(error);
+    console.error("Error adding record:", error);
     res.status(500).send("Error adding record");
   }
 });
@@ -144,47 +152,44 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
       return res.status(404).send("Record not found");
     }
 
-    // Initialize updates without including the image field
-    const updates = {
-      $set: {},
-    };
-
-    // Track if any updates are provided
+    const updates = { $set: {} };
     let hasUpdates = false;
 
-    // Add non-image fields only if they are provided
-    if (req.body.name) {
-      updates.$set.name = req.body.name;
-      hasUpdates = true;
-    }
-    if (req.body.email) {
-      updates.$set.email = req.body.email;
-      hasUpdates = true;
-    }
-    if (req.body.ig_acc) {
-      updates.$set.ig_acc = req.body.ig_acc;
-      hasUpdates = true;
-    }
-    if (req.body.about) {
-      updates.$set.about = req.body.about;
-      hasUpdates = true;
-    }
-    if (req.body.sponsor) {
-      updates.$set.sponsor = req.body.sponsor;
-      hasUpdates = true;
-    }
-    if (req.body.major) {
-      updates.$set.major = Array.isArray(req.body.major) ? req.body.major : [req.body.major];
-      hasUpdates = true;
-    }
-    if (req.body.institution) {
-      updates.$set.institution = Array.isArray(req.body.institution) ? req.body.institution : [req.body.institution];
+    // Handle availability
+    if (req.body.availability !== undefined) {
+      updates.$set.availability = req.body.availability === 'true';
       hasUpdates = true;
     }
 
-    // Handle image update only when necessary
+    // Handle other fields
+    const fieldsToUpdate = [
+      'name', 'email', 'ig_acc', 'about', 'sponsor', 'major', 'institution'
+    ];
+
+    fieldsToUpdate.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updates.$set[field] = req.body[field];
+        hasUpdates = true;
+      }
+    });
+
+    // Handle array fields
+    if (req.body.major) {
+      updates.$set.major = Array.isArray(req.body.major) 
+        ? req.body.major 
+        : [req.body.major];
+      hasUpdates = true;
+    }
+
+    if (req.body.institution) {
+      updates.$set.institution = Array.isArray(req.body.institution) 
+        ? req.body.institution 
+        : [req.body.institution];
+      hasUpdates = true;
+    }
+
+    // Handle image update
     if (req.file) {
-      // New image uploaded, replace old one
       const uploadParams = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: `uploads/${Date.now()}_${req.file.originalname}`,
@@ -209,7 +214,6 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
         }
       }
     } else if (req.body.imageAction === "remove") {
-      // Explicitly remove image
       updates.$set.image = null;
       hasUpdates = true;
       
@@ -226,7 +230,6 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
       }
     }
 
-    // Perform update only if there's something to update
     if (!hasUpdates) {
       return res.status(400).json({ message: "No updates provided" });
     }
@@ -239,20 +242,231 @@ router.patch("/:id", upload.single("image"), async (req, res) => {
   }
 });
 
-// Delete a scholars by ID
+// Delete a scholar by ID
 router.delete("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
     const collection = await db.collection("scholar_table");
     const result = await collection.deleteOne(query);
 
-    if (result.deletedCount === 0)
+    if (result.deletedCount === 0) {
       return res.status(404).send("Record not found");
+    }
 
     res.status(200).json({ message: "Record deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error deleting record");
+  }
+});
+
+/**
+ * SPONSOR SERVER ACTIONS
+ */
+
+// Add new sponsor (with optional image upload)
+router.post("/sponsors", upload.single("image"), async (req, res) => {
+  try {
+    let imageUrl = null;
+
+    if (req.file) {
+      const uploadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `uploads/${Date.now()}_${req.file.originalname}`,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      };
+
+      const uploadResult = await s3.upload(uploadParams).promise();
+      imageUrl = uploadResult.Location;
+    }
+
+    // Safely parse array fields
+    const majors_offered = typeof req.body.majors_offered === 'string' 
+      ? req.body.majors_offered.split(',').map(item => item.trim()).filter(Boolean)
+      : Array.isArray(req.body.majors_offered)
+        ? req.body.majors_offered.map(item => String(item).trim()).filter(Boolean)
+        : [];
+    
+    const programs = typeof req.body.programs === 'string'
+      ? req.body.programs.split(',').map(item => item.trim()).filter(Boolean)
+      : Array.isArray(req.body.programs)
+        ? req.body.programs.map(item => String(item).trim()).filter(Boolean)
+        : [];
+
+    // Handle status
+    const status = req.body.status === 'true';
+
+    const newSponsor = {
+      sponsor: req.body.sponsor,
+      status: status,
+      time_start: new Date(req.body.time_start),
+      time_end: new Date(req.body.time_end),
+      image: imageUrl,
+      programs: programs,
+      majors_offered: majors_offered,
+      link: req.body.link,
+      about: req.body.about
+    };
+
+    console.log('Creating new sponsor:', newSponsor);
+
+    const collection = await db.collection("sponsor_table");
+    const result = await collection.insertOne(newSponsor);
+
+    res.status(201).json(result);
+  } catch (error) {
+    console.error("Error adding sponsor:", error);
+    res.status(500).send("Error adding sponsor");
+  }
+});
+
+// Update a sponsor by ID (with optional image upload)
+router.patch("/sponsors/:id", upload.single("image"), async (req, res) => {
+  try {
+    const query = { _id: new ObjectId(req.params.id) };
+    const collection = await db.collection("sponsor_table");
+    const currentSponsor = await collection.findOne(query);
+
+    if (!currentSponsor) {
+      return res.status(404).send("Sponsor not found");
+    }
+
+    const updates = { $set: {} };
+    let hasUpdates = false;
+
+    // Handle status
+    if (req.body.status !== undefined) {
+      updates.$set.status = req.body.status === 'true';
+      hasUpdates = true;
+    }
+
+    // Handle other fields
+    const fieldsToUpdate = [
+      'sponsor', 'time_start', 'time_end', 'link', 'about'
+    ];
+
+    fieldsToUpdate.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updates.$set[field] = field.includes('time_') ? new Date(req.body[field]) : req.body[field];
+        hasUpdates = true;
+      }
+    });
+
+    // Handle array fields - more robust handling
+    if (req.body.majors_offered !== undefined) {
+      let majorsArray;
+      if (typeof req.body.majors_offered === 'string') {
+        majorsArray = req.body.majors_offered.split(',').map(item => item.trim()).filter(Boolean);
+      } else if (Array.isArray(req.body.majors_offered)) {
+        majorsArray = req.body.majors_offered.map(item => String(item).trim()).filter(Boolean);
+      } else {
+        majorsArray = [];
+      }
+      updates.$set.majors_offered = majorsArray;
+      hasUpdates = true;
+    }
+
+    if (req.body.programs !== undefined) {
+      let programsArray;
+      if (typeof req.body.programs === 'string') {
+        programsArray = req.body.programs.split(',').map(item => item.trim()).filter(Boolean);
+      } else if (Array.isArray(req.body.programs)) {
+        programsArray = req.body.programs.map(item => String(item).trim()).filter(Boolean);
+      } else {
+        programsArray = [];
+      }
+      updates.$set.programs = programsArray;
+      hasUpdates = true;
+    }
+
+    // Handle image update
+    if (req.file) {
+      const uploadParams = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `uploads/${Date.now()}_${req.file.originalname}`,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      };
+
+      const uploadResult = await s3.upload(uploadParams).promise();
+      updates.$set.image = uploadResult.Location;
+      hasUpdates = true;
+
+      // Delete old image if it exists
+      if (currentSponsor.image) {
+        try {
+          const oldImageKey = currentSponsor.image.split('/').pop();
+          await s3.deleteObject({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: `uploads/${oldImageKey}`,
+          }).promise();
+        } catch (deleteError) {
+          console.error("Error deleting old image:", deleteError);
+        }
+      }
+    } else if (req.body.imageAction === "remove") {
+      updates.$set.image = null;
+      hasUpdates = true;
+      
+      if (currentSponsor.image) {
+        try {
+          const oldImageKey = currentSponsor.image.split('/').pop();
+          await s3.deleteObject({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: `uploads/${oldImageKey}`,
+          }).promise();
+        } catch (deleteError) {
+          console.error("Error deleting old image:", deleteError);
+        }
+      }
+    }
+
+    if (!hasUpdates) {
+      return res.status(400).json({ message: "No updates provided" });
+    }
+
+    const result = await collection.updateOne(query, updates);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error updating sponsor:", error);
+    res.status(500).send("Error updating sponsor");
+  }
+});
+// Delete a sponsor by ID
+router.delete("/sponsors/:id", async (req, res) => {
+  try {
+    const query = { _id: new ObjectId(req.params.id) };
+    const collection = await db.collection("sponsor_table");
+    const sponsor = await collection.findOne(query);
+
+    if (!sponsor) {
+      return res.status(404).send("Sponsor not found");
+    }
+
+    // Delete associated image if it exists
+    if (sponsor.image) {
+      try {
+        const imageKey = sponsor.image.split('/').pop();
+        await s3.deleteObject({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: `uploads/${imageKey}`,
+        }).promise();
+      } catch (deleteError) {
+        console.error("Error deleting sponsor image:", deleteError);
+      }
+    }
+
+    const result = await collection.deleteOne(query);
+
+    if (result.deletedCount === 0) {
+      return res.status(404).send("Sponsor not found");
+    }
+
+    res.status(200).json({ message: "Sponsor deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting sponsor:", error);
+    res.status(500).send("Error deleting sponsor");
   }
 });
 
