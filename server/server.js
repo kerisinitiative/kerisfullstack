@@ -10,13 +10,14 @@ const app = express();
 
 app.use(cors(
   {
-    origin: [process.env.FRONTEND_URL],
+    /*origin: [process.env.FRONTEND_URL],
     methods: ["POST", "GET"],
-    credentials: true
+    credentials: true*/
   }
 ));
+
 app.use(express.json());
-app.use("/record", records);
+app.use("/api", records);
 
 // Start the Express server
 app.listen(PORT, () => {
