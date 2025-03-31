@@ -21,7 +21,7 @@ const Home = () => {
             </a>
           </Link>
           <Link to="/admin">
-            <a className="border mx-1 text-slate-200 bg-green-600 rounded-md p-1 hover:bg-blue-300">
+            <a className="border mx-1 text-slate-200  bg-green-600 rounded-md p-1 hover:bg-blue-300">
               Admin Page : Typical Password
             </a>
           </Link>
