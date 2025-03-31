@@ -12,7 +12,7 @@ const router = express.Router();
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: "us-east-2",
+  region: process.env.AWS_REGION,
 });
 
 const s3 = new AWS.S3();
@@ -247,10 +247,33 @@ router.delete("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
     const collection = await db.collection("scholar_table");
+    
+    // First get the record to check if it has an image
+    const currentRecord = await collection.findOne(query);
+    
+    if (!currentRecord) {
+      return res.status(404).send("Record not found");
+    }
+
+    // Delete the record from MongoDB
     const result = await collection.deleteOne(query);
 
     if (result.deletedCount === 0) {
       return res.status(404).send("Record not found");
+    }
+
+    // If the record had an image, delete it from S3
+    if (currentRecord.image) {
+      try {
+        const oldImageKey = currentRecord.image.split('/').pop();
+        await s3.deleteObject({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: `uploads/${oldImageKey}`,
+        }).promise();
+      } catch (deleteError) {
+        console.error("Error deleting old image:", deleteError);
+        // We still proceed even if image deletion fails
+      }
     }
 
     res.status(200).json({ message: "Record deleted successfully" });

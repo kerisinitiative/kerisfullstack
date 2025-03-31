@@ -367,5 +367,21 @@ hr {
   }
 }
 
+/* Table
+.table {
+  --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+    border-width: 1px;
+    margin: 1 rem;
+}
+.tr {
+  --tw-bg-opacity: 1;
+    background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
+}
+.th {
+  padding: 0.5rem;
+  border-right-width: 1px;
+} */
+
 /* Note: I've kept the core structure but standardized colors and fonts.
    You may need to adjust some specific components as needed for your design. */
