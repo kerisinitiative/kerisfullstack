@@ -48,7 +48,7 @@ KERIS Full-Stack is a web-based platform designed to provide students with resou
 - **Frontend**: React.js, TailwindCSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
-- **Hosting**: Vercel (Frontend), Heroku (Backend)
+- **Hosting**: Vercel (Frontend), Render (Backend)
 
 ## Setup and Installation
 ### Prerequisites
