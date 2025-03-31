@@ -1,33 +1,87 @@
-# KERIS Webapp : Made with MERN Stack
+# KERIS Full-Stack
+
+![KERIS](https://github.com/piqim/kerisfullstack/raw/main/assets/logo.png)  
+A full-stack web application for KERIS, an initiative aimed at educating students in Kelantan about higher education and scholarships.
+
+## Preview Access :
+https://kerisfullstack-app.vercel.app/
+* Note: Backend server may be on stand-stil due to free instance plan. I can't afford a paid instance yet.
+
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Route Map](#route-map)
+- [Tech Stack](#tech-stack)
+- [Setup and Installation](#setup-and-installation)
+- [Contributors](#contributors)
+- [License](#license)
+
+## Overview
+KERIS Full-Stack is a web-based platform designed to provide students with resources, mentorship, and guidance regarding higher education opportunities. The project modernizes an older static Bootstrap-based website into a fully dynamic, scalable, and maintainable full-stack application using React.js and Node.js. It connects high school graduates in Malaysia with scholarship resources and mentors who have received scholarships to study locally and overseas.
+
+## Features
+- **Admin Panel**: Manage content, student resources, and user interactions.
+- **Student Dashboard**: Access scholarship resources, mentorship programs, and educational events.
+- **Modern UI/UX**: Redesigned front-end using TailwindCSS with React.js.
+- **Database Integration**: A robust backend with user authentication and data persistence.
 
 ## Route Map
 ### Client Path
-* Home Page:
-* Scholar
-- Scholar - Detail
-* Scholarship
-- Scholarship - Detail
+- **Home Page**
+- **Scholar**
+  - Scholar - Detail
+- **Scholarship**
+  - Scholarship - Detail
 
 ### Admin Path
-* Dashboard Page:
-* Scholar (List)
-- Add Scholar
-- Edit Scholar
-- Delete Scholar
-* Scholarship (List)
-- Add Scholarship
-- Edit Scholarship
-- Delete Scholarship
+- **Dashboard Page**
+- **Scholar (List)**
+  - Add Scholar
+  - Edit Scholar
+  - Delete Scholar
+- **Scholarship (List)**
+  - Add Scholarship
+  - Edit Scholarship
+  - Delete Scholarship
 
-# React + Vite
+## Tech Stack
+- **Frontend**: React.js, TailwindCSS
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Hosting**: Vercel (Frontend), Heroku (Backend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup and Installation
+### Prerequisites
+- [Node.js](https://nodejs.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Git](https://git-scm.com/)
 
-Currently, two official plugins are available:
+### Steps
+1. **Clone the Repository**
+   ```sh
+   git clone https://github.com/piqim/kerisfullstack.git
+   cd kerisfullstack
+   ```
+2. **Install Dependencies**
+   ```sh
+   npm install
+   ```
+3. **Start the Development Server**
+   ```sh
+   npm start
+   ```
+4. **Run the Backend**
+   ```sh
+   cd backend
+   npm install
+   node server.js
+   ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Contributors
+- **Mustaqim (Piqim) - https://github.com/piqim - Main Contributor**: Developed the backend and front-end environments for both the client and admin sides.
+- **Dayana - https://github.com/dayansyahz - Contributor**
+- **Zai - https://github.com/zainatulzahirah - Contributor**
+: Migrated the home page from a static Bootstrap-based design to a modern Tailwind React.js framework.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## License
+This project is licensed under the [MIT License](LICENSE).
