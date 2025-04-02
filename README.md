@@ -81,7 +81,8 @@ KERIS Full-Stack is a web-based platform designed to provide students with resou
 - **Mustaqim (Piqim) - https://github.com/piqim - Main Contributor**: Developed the backend and front-end environments for both the client and admin sides.
 - **Dayana - https://github.com/dayansyahz - Contributor**
 - **Zai - https://github.com/zainatulzahirah - Contributor**
-: Migrated the home page from a static Bootstrap-based design to a modern Tailwind React.js framework.
+
+Migrated the home page from a static Bootstrap-based design to a modern Tailwind React.js framework.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).

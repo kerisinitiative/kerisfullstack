@@ -388,7 +388,7 @@ const Scholar = () => {
               <Record record={record} key={record._id} />
             ))
           ) : (
-            <p>No scholars found.</p>
+            <p>No scholars found, the server may be restarting. Please be patient, and refresh or wait a few minutes. Thank you!</p>
           )}
         </div>
 

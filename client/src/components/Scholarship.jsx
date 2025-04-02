@@ -300,7 +300,7 @@ const Scholarship = () => {
               <Record sponsors={sponsor} key={sponsor._id} />
             ))
           ) : (
-            <p>No sponsors found.</p>
+            <p>No scholarships found, the server may be restarting. Please be patient, and refresh or wait a few minutes. Thank you!</p>
           )}
         </div>
 
