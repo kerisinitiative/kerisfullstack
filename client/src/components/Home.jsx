@@ -1,32 +1,221 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import bgImg from "../assets/img/hero-bg1.jpg";
+
+const faqs = [
+  {
+    question: "What is KERIS?",
+    answer:
+      "Standing for 'Kelantan Resources Initiative for Students', KERIS is a student-led organization that aims to help Kelantan students in their academic journey post-SPM, providing assistance for them to get scholarships and help them have a clear pathway to pursue their studies.",
+  },
+  {
+    question: "What is our aim?",
+    answer:
+      "KERIS is playing a vital role in empowering Kelantan students and contributing to their educational and professional development. We will put our efforts to support students in their academic journey.",
+  },
+  {
+    question: "What can I expect?",
+    answer:
+      "Students engage with KERIS can expect a range of benefits and support to aid them in their academic journey. They can expect comprehensive support, guidance, and resources to help them succeed academically and prepare for their future endeavors.",
+  },
+];
 
 const Home = () => {
-  /* jangan guna <body> tag pleasseeeee */
   return (
-    <div className="text-center min-h-screen">
-      <div className="my-10">
-        <p>Home. This is a placeholder, for temporary purposes.</p>
+    <div>
+      {/* HERO Section with Parallax Background */}
+      <section id="hero">
+        <header
+          className="relative h-[90%] flex items-center justify-center text-center text-white"
+          style={{
+            backgroundImage: `url(${bgImg})`,
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* Background overlay - now only covers the background image */}
+          <div className="absolute inset-0 bg-white bg-opacity-80"></div>
 
-        <div className="my-2">
-          You can click buttons below to test out certain functions: <br></br>
-          <Link to="/scholar">
-            <a className="border mx-1 bg-red-600 rounded-md p-1 hover:bg-red-300">
-              Scholar Page
-            </a>
-          </Link>
-          <Link to="/scholarship">
-            <a className="border mx-1 text-slate-200 bg-blue-600 rounded-md p-1 hover:bg-blue-300">
-              Scholarship Page
-            </a>
-          </Link>
-          <Link to="/admin">
-            <a className="border mx-1 text-slate-200  bg-green-600 rounded-md p-1 hover:bg-blue-300">
-              Admin Page : Typical Password
-            </a>
-          </Link>
+          {/* Content container - relative positioning brings it above the overlay */}
+          <div className="relative z-10 p-4 sm:p-6 rounded-lg min-w-40 max-w-80 md:max-w-lg mx-auto">
+            <h1 className="text-xl text-[--color-primary] font-bold sm:text-6xl md:text-8xl">
+              KERIS
+            </h1>
+            <p className="text-lg text-[--color-dark] mt-2 font-semibold md:text-2xl">
+              For <span className="text-[--color-primary]">scholars</span>, by{" "}
+              <span className="text-[--color-primary]">scholars.</span>
+            </p>
+
+            {/* WELCOMING BUTTON */}
+            <div>
+              <a
+                href="#resource"
+                data-aos="fade-up"
+                data-aos-delay="300"
+                className="btn-get-started scrollto text-[--color-dark] mt-4"
+              >
+                View the new <b>Dashboard</b>!
+              </a>
+            </div>
+          </div>
+        </header>
+      </section>
+
+      {/* About Section */}
+      <section id="about">
+        <div className="min-h-screen px-10 sm:px-12 md:px-20 items-center justify-center text-center">
+          <h1 className="py-16 text-[--color-light] font-bold text-4xl">
+            <span className="pr-2 font-thin text-[--color-highlight]">— </span>
+            ABOUT US
+            <span className="pl-2 font-thin text-[--color-highlight]"> —</span>
+          </h1>
+          <div className="grid grid-cols-1 pb-16 md:pb-0 lg:grid-cols-2 gap-8 text-left">
+            <div className="text-[--color-light]">
+              <p className="text-xl">
+                KERIS is an illustrious and visionary student-led organization
+                that ardently endeavors to empower and uplift the aspiring
+                scholars of Kelantan in their formidable academic odyssey
+                post-SPM. With an unwavering commitment, we extend a benevolent
+                hand to guide and nurture these bright minds, facilitating their
+                quest for erudition and scholarly pursuits. Through our
+                tenacious efforts, we proffer invaluable aid, orchestrating a
+                myriad of opportunities, including the procurement of
+                prestigious scholarships, as well as elucidating a lucid
+                trajectory, enabling them to embark upon their educational
+                endeavors with unwavering confidence and clarity.
+              </p>
+            </div>
+            <div className="text-[--color-light]">
+              <p className="text-3xl font-semibold">
+                We hold dearly to the idea that everyone should be given the
+                opportunity and guidance to apply for scholarships, irrespective
+                of their backgrounds.
+              </p>
+              <p className="text-xl my-4">We provide guidance on:</p>
+              <ul>
+                <li className="py-1">* CV Building</li>
+                <li className="py-1">* Essay Writing</li>
+                <li className="py-1">* Acing Interviews</li>
+                <li className="py-1">* and more!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Resource Section */}
+      <section id="resource">
+        <div className="px-10 pt-16 sm:px-12 md:px-16 pb-16 bg-white items-center justify-center text-center">
+          <h1 className="text-[--color-dark] font-bold text-4xl">
+            <span className="pr-2 font-thin text-[--color-highlight]">— </span>
+            RESOURCES
+            <span className="pl-2 font-thin text-[--color-highlight]"> —</span>
+          </h1>
+          <p className="text-xl mt-4">
+            Specially curated by the 2023 Team, here are resources to equip you
+            with all you need to secure a post-secondary scholarship!
+          </p>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <NavLink to="/scholarship">
+              <a className="flex items-center p-4 bg-gray-100 hover:bg-gray-50 rounded-lg shadow">
+                <div className="p-3 bg-gray-200 rounded-md">
+                  <span className="text-red-500 text-2xl cursor-pointer">
+                    📖
+                  </span>
+                </div>
+                <div className="ml-4 text-left">
+                  <h3 className="text-lg text-[--color-dark] font-semibold">
+                    Scholarship Dashboard
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    Intro to navigating the scholarship available.
+                  </p>
+                </div>
+              </a>
+            </NavLink>
+
+            <NavLink to="/scholar">
+              <a className="flex items-center p-4 bg-gray-100 hover:bg-gray-50 rounded-lg shadow">
+                <div className="p-3 bg-gray-200 rounded-md">
+                  <span className="text-red-500 text-2xl cursor-pointer">
+                    👥
+                  </span>
+                </div>
+                <div className="ml-4 text-left">
+                  <h3 className="text-lg text-[--color-dark] font-semibold">
+                    Scholars Dashboard
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    Meet some of our prestigious scholars from Kelantan!
+                  </p>
+                </div>
+              </a>
+            </NavLink>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq">
+        <div className="px-10 pt-16 sm:px-12 md:px-16 bg-white items-center justify-center">
+          <h1 className="text-[--color-dark] font-bold text-4xl text-center">
+            <span className="pr-2 font-thin text-[--color-highlight]">— </span>
+            FAQ
+            <span className="pl-2 font-thin text-[--color-highlight]"> —</span>
+          </h1>
+          <div className="mt-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="py-10 border-b border-gray-200 flex">
+                <span className="text-yellow-500 text-2xl">❓</span>
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  <h3 className="text-2xl text-gray-700 font-semibold ml-4">
+                    {faq.question}
+                  </h3>
+                  <p className="text-gray-600 text-md mt-1">{faq.answer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT SECTION */}
+      <section id="contact">
+        <div className="px-10 pt-16 sm:px-12 md:px-16 py-16 bg-white items-center justify-center">
+          <h1 className="text-[--color-dark] font-bold text-4xl text-center">
+            <span className="pr-2 font-thin text-[--color-highlight]">— </span>
+            CONTACT US
+            <span className="pl-2 font-thin text-[--color-highlight]"> —</span>
+          </h1>
+
+          <div className="grid mt-12 gap-6 md:grid-cols-3 text-center">
+        <div>
+          <h3 className="text-3xl font-semibold">Instagram</h3>
+          <p className="text-gray-600 text-lg">The latest updates, pictures and stories are all shot here!</p>
+          <a href="https://www.instagram.com/kerismy/" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+            <span className="ml-2 text-lg">@kerismy</span>
+          </a>
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">Tiktok</h3>
+          <p className="text-gray-600 text-lg">Funny videos and information about scholarships are all posted here!</p>
+          <a href="https://www.instagram.com/kerismy/" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+            <span className="ml-2">@keris.my</span>
+          </a>
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">Email</h3>
+          <p className="text-gray-600 text-lg">For more information or any concerns, don't hesitate to contact us!</p>
+          <a href="mailto:kerisinitiative@gmail.com" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+            <span className="ml-2">kerisinitiative@gmail.com</span>
+          </a>
         </div>
       </div>
+          
+        </div>
+      </section>
     </div>
   );
 };
