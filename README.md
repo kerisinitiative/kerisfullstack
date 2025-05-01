@@ -4,8 +4,7 @@
 A full-stack web application for KERIS, an initiative aimed at educating students in Kelantan about higher education and scholarships.
 
 ## Preview Access :
-Visit: https://github.com/kerisinitiative/kerisfullstack
-* Up to date version transferred to official organization GitHub repository.
+[https://kerisfrontend.vercel.app/](https://kerisfrontend.vercel.app/) or https://kerisbackend.onrender.com or https://kerismy.com
 * Note: Backend server may be on stand-stil due to free instance plan. I can't afford a paid instance yet.
 
 ## Table of Contents
