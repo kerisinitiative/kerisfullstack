@@ -55,6 +55,11 @@ export default function Navbar() {
                       </a>
                     </li>
                   </NavLink>
+                  <a href="https://drive.google.com/drive/folders/1nEYxi9TDSJqKcg304CggB9o2FfurIg_l?usp=sharing" target="_blank" rel="noopener noreferrer">
+                    <div className="bg-white text-black font-semibold p-2 text-center border-2 border-black mt-1">
+                      Essay Repository
+                    </div>
+                  </a>
                 </ul>
                 </a>
               </li>
@@ -118,6 +123,9 @@ export default function Navbar() {
             <NavLink to="/scholarship" onClick={toggleMobileNav}>
               <p className="py-2 text-lg">Scholarship Status</p>
             </NavLink>
+            <a href="https://drive.google.com/drive/folders/1nEYxi9TDSJqKcg304CggB9o2FfurIg_l?usp=sharing" target="_blank" rel="noopener noreferrer" onClick={toggleMobileNav}>
+              <p className="py-2 text-lg">Essay Repository</p>
+            </a>
           </div>
         </div>
 
