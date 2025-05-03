@@ -154,10 +154,12 @@ const Home = () => {
               </a>
             </NavLink>
 
-            <a className="flex items-center p-4 bg-gray-100 hover:bg-gray-50 rounded-lg shadow">
+            <a className="flex items-center p-4 bg-gray-100 hover:bg-gray-50 rounded-lg shadow" 
+            href="https://drive.google.com/drive/folders/1nEYxi9TDSJqKcg304CggB9o2FfurIg_l?usp=sharing" 
+            target="_blank" rel="noopener noreferrer">
                 <div className="p-3 bg-gray-200 rounded-md">
                   <span className="text-red-500 text-2xl cursor-pointer">
-                    📖
+                    ☁️
                   </span>
                 </div>
                 <div className="ml-4 text-left">
@@ -165,10 +167,29 @@ const Home = () => {
                     Essay Repository
                   </h3>
                   <p className="text-gray-500 text-sm">
-                    Your ultimate archive of successful scholarship essays, ready to guide your next draft.
+                    Your ultimate archive of successful scholarship essays.
                   </p>
                 </div>
-              </a>
+            </a>
+            
+            <a className="flex items-center p-4 bg-gray-100 hover:bg-gray-50 rounded-lg shadow" 
+            href="https://drive.google.com/drive/folders/1qlGAclESRxLpnt5gZbZzXYVkyayEuLfb?usp=sharing" 
+            target="_blank" rel="noopener noreferrer">
+                <div className="p-3 bg-gray-200 rounded-md">
+                  <span className="text-red-500 text-2xl cursor-pointer">
+                    📄
+                  </span>
+                </div>
+                <div className="ml-4 text-left">
+                  <h3 className="text-lg text-[--color-dark] font-semibold">
+                    Resume Template
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    Your go-to hub for standout resume templates that get noticed.
+                  </p>
+                </div>
+            </a>
+
           </div>
         </div>
       </section>
