@@ -216,7 +216,7 @@ const Scholar = () => {
             <aside className="p-4 bg-gray-100 rounded-lg">
               📰 Our scholars can help you <strong>Build Your CV</strong> by
               reviewing it and suggesting appropriate amendments. This service
-              is available for Shell, YK, and other scholarships.
+              is available for YTP MARA, Shell, YK, and other scholarships.
             </aside>
           </div>
         </div>
