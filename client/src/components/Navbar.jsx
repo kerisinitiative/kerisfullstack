@@ -60,6 +60,11 @@ export default function Navbar() {
                       Essay Repository
                     </div>
                   </a>
+                  <a className="block p-2 hover:bg-gray-100 hover:rounded" href="https://drive.google.com/drive/folders/1qlGAclESRxLpnt5gZbZzXYVkyayEuLfb?usp=sharing" target="_blank" rel="noopener noreferrer">
+                    <div>
+                      Resume Template
+                    </div>
+                  </a>
                 </ul>
                 </a>
               </li>
@@ -124,6 +129,9 @@ export default function Navbar() {
               <p className="py-2 text-lg">Scholarship Status</p>
             </NavLink>
             <a href="https://drive.google.com/drive/folders/1nEYxi9TDSJqKcg304CggB9o2FfurIg_l?usp=sharing" target="_blank" rel="noopener noreferrer" onClick={toggleMobileNav}>
+              <p className="py-2 text-lg">Essay Repository</p>
+            </a>
+            <a href="https://drive.google.com/drive/folders/1qlGAclESRxLpnt5gZbZzXYVkyayEuLfb?usp=sharing" target="_blank" rel="noopener noreferrer" onClick={toggleMobileNav}>
               <p className="py-2 text-lg">Essay Repository</p>
             </a>
           </div>
