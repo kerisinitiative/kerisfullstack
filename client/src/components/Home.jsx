@@ -88,9 +88,9 @@ const Home = () => {
             </div>
             <div className="text-[--color-light]">
               <p className="text-3xl font-semibold">
-                We hold dearly to the idea that everyone should be given the
-                opportunity and guidance to apply for scholarships, irrespective
-                of their backgrounds.
+              We firmly believe that everyone deserves equal opportunity 
+              and support to pursue scholarship applications, 
+              regardless of their upbringing.
               </p>
               <p className="text-xl my-4">We provide guidance on:</p>
               <ul>
@@ -113,7 +113,7 @@ const Home = () => {
             <span className="pl-2 font-thin text-[--color-highlight]"> —</span>
           </h1>
           <p className="text-xl mt-4">
-            Specially curated by the 2023 Team, here are resources to equip you
+            Specially curated by the 2025 Team, here are resources to equip you
             with all you need to secure a post-secondary scholarship!
           </p>
 
@@ -205,7 +205,7 @@ const Home = () => {
           <div className="mt-4">
             {faqs.map((faq, index) => (
               <div key={index} className="py-10 border-b border-gray-200 flex">
-                <span className="text-yellow-500 text-2xl">❓</span>
+                <span className="text-yellow-500 text-2xl">🚀</span>
                 <div className="grid grid-cols-1 md:grid-cols-2">
                   <h3 className="text-2xl text-gray-700 font-semibold ml-4">
                     {faq.question}
@@ -227,7 +227,7 @@ const Home = () => {
             <span className="pl-2 font-thin text-[--color-highlight]"> —</span>
           </h1>
 
-          <div className="grid mt-12 gap-6 md:grid-cols-3 text-center">
+        <div className="grid mt-12 gap-6 md:grid-cols-3 text-center">
         <div>
           <h3 className="text-3xl font-semibold">Instagram</h3>
           <p className="text-gray-600 text-lg">The latest updates, pictures and stories are all shot here!</p>
@@ -238,7 +238,7 @@ const Home = () => {
         <div>
           <h3 className="text-3xl font-semibold">Tiktok</h3>
           <p className="text-gray-600 text-lg">Funny videos and information about scholarships are all posted here!</p>
-          <a href="https://www.instagram.com/kerismy/" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+          <a href="https://www.tiktok.com/@keris.my" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
             <span className="ml-2">@keris.my</span>
           </a>
         </div>
@@ -249,8 +249,29 @@ const Home = () => {
             <span className="ml-2">kerisinitiative@gmail.com</span>
           </a>
         </div>
-      </div>
-          
+        <div>
+          <h3 className="text-3xl font-semibold">YouTube</h3>
+          <p className="text-gray-600 text-lg">Watch our inspiring scholarship stories, interviews, and educational content!</p>
+          <a href="www.youtube.com/@keris-my" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+            <span className="ml-2">@kerismy</span>
+          </a>
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">LinkedIn</h3>
+          <p className="text-gray-600 text-lg">Connect with us professionally and explore our impact in the education community!</p>
+          <a href="mailto:kerisinitiative@gmail.com" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+            <span className="ml-2">Keris Initiative</span>
+          </a>
+        </div>
+        <div>
+          <h3 className="text-3xl font-semibold">Telegram</h3>
+          <p className="text-gray-600 text-lg">Join our channel for instant scholarship updates and exclusive opportunities!</p>
+          <a href="https://t.me/keris2023" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+            <span className="ml-2">keris2023</span>
+          </a>
+        </div>
+
+        </div>          
         </div>
       </section>
     </div>
