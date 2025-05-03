@@ -173,11 +173,11 @@ const Scholar = () => {
       >
         <div className="bg-black bg-opacity-50 p-4 sm:p-6 rounded-lg min-w-40 max-w-80 md:max-w-lg mx-auto">
           <h1 className="text-xl text-white font-bold sm:text-2xl md:text-4xl">
-            Welcome to Your Scholar Dashboard 🎓
+            Meet Your Scholars 🎓
           </h1>
           <p className="text-lg text-gray-200 mt-2 md:text-xl">
-            Your one-stop hub for mentorship, resources, and growth. Let's make
-            your journey smoother!
+            A section listing scholars who are open to helping students with essay proofreading, 
+            CV building, and general scholarship guidance.
           </p>
           <div data-aos="fade-up" data-aos-delay="800">
             <a
@@ -214,7 +214,7 @@ const Scholar = () => {
               for applications that require essays, such as YK, PNB, and UEM.
             </aside>
             <aside className="p-4 bg-gray-100 rounded-lg">
-              📰 Our scholars can help you <strong>Build Your CV</strong> by
+              📰 Our scholars can help you <strong>Build Your resume</strong> by
               reviewing it and suggesting appropriate amendments. This service
               is available for YTP MARA, Shell, YK, and other scholarships.
             </aside>
@@ -226,20 +226,29 @@ const Scholar = () => {
           <h2 className="text-xl font-semibold text-gray-800">
             How to Become our Mentee?
           </h2>
-          <ul className="mt-4 space-y-2 list-disc list-inside text-gray-600">
+          <ol type="1" className="mt-4 space-y-2 list-disc list-inside text-gray-600">
             <li>
-              Reach out to one of your favorite mentors through Gmail or other
-              contact points like Telegram or Instagram.
+              Reach out 
+              <p>
+              Contact your preferred mentor through Gmail, Telegram, Instagram, 
+              or phone—whichever works best for you!
+              </p>
             </li>
             <li>
+              Let Us Know You're New
+              <p>
               Ask for any kind of help you need, no matter how big or small.
               We'll do our best to assist you.
+              </p>
             </li>
             <li>
-              If you're new to scholarship tips, let us know in your message. It
-              helps us figure out how to best help you.
+              Be Patient
+              <p>
+              Kindly avoid sending multiple messages. 
+              Our mentors will get back to you within 5 days.
+              </p>
             </li>
-          </ul>
+          </ol>
           <p className="mt-4 text-gray-600">
             Don't be shy – we're here to support you!
           </p>

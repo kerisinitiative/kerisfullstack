@@ -167,11 +167,11 @@ const Scholarship = () => {
       >
         <div className="bg-black bg-opacity-50 p-4 sm:p-6 rounded-lg min-w-40 max-w-80 md:max-w-lg mx-auto">
           <h1 className="text-xl text-white font-bold sm:text-2xl md:text-4xl">
-            Welcome to The Scholarship Dashboard
+            Scholarship Status Tracker
           </h1>
           <p className="text-lg text-gray-200 mt-2 md:text-xl">
-            Your one-stop hub for information, inspiration, and application.
-            Let's make a change!
+            A section showing what scholarship applications are currently open (especially post-SPM), 
+            their deadlines, and key details
           </p>
           <div data-aos="fade-up" data-aos-delay="800">
             <a
