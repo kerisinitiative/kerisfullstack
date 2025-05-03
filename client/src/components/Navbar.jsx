@@ -132,7 +132,7 @@ export default function Navbar() {
               <p className="py-2 text-lg">Essay Repository</p>
             </a>
             <a href="https://drive.google.com/drive/folders/1qlGAclESRxLpnt5gZbZzXYVkyayEuLfb?usp=sharing" target="_blank" rel="noopener noreferrer" onClick={toggleMobileNav}>
-              <p className="py-2 text-lg">Essay Repository</p>
+              <p className="py-2 text-lg">Resume Template</p>
             </a>
           </div>
         </div>
