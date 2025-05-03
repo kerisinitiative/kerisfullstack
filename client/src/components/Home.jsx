@@ -153,6 +153,22 @@ const Home = () => {
                 </div>
               </a>
             </NavLink>
+
+            <a className="flex items-center p-4 bg-gray-100 hover:bg-gray-50 rounded-lg shadow">
+                <div className="p-3 bg-gray-200 rounded-md">
+                  <span className="text-red-500 text-2xl cursor-pointer">
+                    📖
+                  </span>
+                </div>
+                <div className="ml-4 text-left">
+                  <h3 className="text-lg text-[--color-dark] font-semibold">
+                    Essay Repository
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    Your ultimate archive of successful scholarship essays, ready to guide your next draft.
+                  </p>
+                </div>
+              </a>
           </div>
         </div>
       </section>
