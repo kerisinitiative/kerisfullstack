@@ -252,21 +252,21 @@ const Home = () => {
         <div>
           <h3 className="text-3xl font-semibold">YouTube</h3>
           <p className="text-gray-600 text-lg">Watch our inspiring scholarship stories, interviews, and educational content!</p>
-          <a href="www.youtube.com/@keris-my" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+          <a href="https://youtube.com/@keris-my?si=TxFBbSaTybgzhWql" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
             <span className="ml-2">@kerismy</span>
           </a>
         </div>
         <div>
           <h3 className="text-3xl font-semibold">LinkedIn</h3>
           <p className="text-gray-600 text-lg">Connect with us professionally and explore our impact in the education community!</p>
-          <a href="mailto:kerisinitiative@gmail.com" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+          <a href="https://www.linkedin.com/company/keris-my/" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
             <span className="ml-2">Keris Initiative</span>
           </a>
         </div>
         <div>
           <h3 className="text-3xl font-semibold">Telegram</h3>
           <p className="text-gray-600 text-lg">Join our channel for instant scholarship updates and exclusive opportunities!</p>
-          <a href="https://t.me/keris2023" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
+          <a href="https://t.me/keris2023" target="_blank" className="flex hover:underline items-center justify-center mt-2 text-gray-700">
             <span className="ml-2">keris2023</span>
           </a>
         </div>
