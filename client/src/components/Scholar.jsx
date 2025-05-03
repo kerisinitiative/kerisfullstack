@@ -177,7 +177,7 @@ const Scholar = () => {
           </h1>
           <p className="text-lg text-gray-200 mt-2 md:text-xl">
             A section listing scholars who are open to helping students with essay proofreading, 
-            CV building, and general scholarship guidance.
+            resume building, and general scholarship guidance.
           </p>
           <div data-aos="fade-up" data-aos-delay="800">
             <a
@@ -214,7 +214,7 @@ const Scholar = () => {
               for applications that require essays, such as YK, PNB, and UEM.
             </aside>
             <aside className="p-4 bg-gray-100 rounded-lg">
-              📰 Our scholars can help you <strong>Build Your resume</strong> by
+              📰 Our scholars can help you <strong>Build Your Resume</strong> by
               reviewing it and suggesting appropriate amendments. This service
               is available for YTP MARA, Shell, YK, and other scholarships.
             </aside>
@@ -226,7 +226,7 @@ const Scholar = () => {
           <h2 className="text-xl font-semibold text-gray-800">
             How to Become our Mentee?
           </h2>
-          <ol type="1" className="mt-4 space-y-2 list-disc list-inside text-gray-600">
+          <ol className="mt-4 space-y-2 list-disc list-inside text-gray-600">
             <li>
               Reach out 
               <p>
